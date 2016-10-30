@@ -10,7 +10,7 @@ module.exports = function (grunt) {
       ' */\n' +
       '(function (window, angular, undefined) {\n\'use strict\';\n\n';
   }
-  
+
   function getVersion() {
     return grunt.file.readJSON('./bower.json').version;
   }
@@ -19,11 +19,11 @@ module.exports = function (grunt) {
   require('load-grunt-tasks')(grunt, {scope: 'devDependencies'});
 
   grunt.initConfig({
-    
+
     config: {
-      livereload: 35729
+      livereload: 35730
     },
-    
+
     // Add vendor prefixes
     autoprefixer: {
       options: {
@@ -40,7 +40,7 @@ module.exports = function (grunt) {
         }
       }
     },
-    
+
     // remove generated files
     clean: {
       app: 'app/app.css',
@@ -64,7 +64,7 @@ module.exports = function (grunt) {
         }
       }
     },
-    
+
     // static web server
     connect: {
       app: {
@@ -77,7 +77,7 @@ module.exports = function (grunt) {
         }
       }
     },
-    
+
     // minify css files
     cssmin: {
       build: {
@@ -86,7 +86,7 @@ module.exports = function (grunt) {
         }
       }
     },
-    
+
     // convert templates to javascript and load them into
     // the template cache
     html2js: {
@@ -104,7 +104,7 @@ module.exports = function (grunt) {
         }
       }
     },
-    
+
     // report bad javascript syntax, uses jshint-stylish for
     // more readable logging to the console
     jshint: {
@@ -139,7 +139,7 @@ module.exports = function (grunt) {
         }
       }
     },
-    
+
     // perform tasks on file change
     watch: {
       options: {
@@ -176,16 +176,16 @@ module.exports = function (grunt) {
       }
     }
   });
-  
+
   grunt.registerTask('default', function () {
-    
+
     // buld the md-data-table module
     grunt.task.run('build');
-    
+
     // start the app
     grunt.task.run('serve');
   });
-  
+
   grunt.registerTask('build', [
     'jshint:build',
     'less:build',
@@ -195,7 +195,7 @@ module.exports = function (grunt) {
     'concat:build',
     'uglify:build'
   ]);
-  
+
   grunt.registerTask('serve', [
     'jshint:app',
     'less:app',

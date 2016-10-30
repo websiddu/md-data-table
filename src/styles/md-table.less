@@ -25,25 +25,58 @@ md-table-container {
   -webkit-overflow-scrolling: touch;
 }
 
-table.md-table {
+.md-table {
   width: 100%;
   border-spacing: 0;
   overflow: hidden;
+  display: table;
 
-  thead.md-head > tr.md-row {
-    height: 56px;
+  .md-head {
+    .md-column {
+      display: table-cell;
+    }
   }
 
-  tbody.md-body > tr.md-row,
-  tfoot.md-foot > tr.md-row {
+  .md-body, .md-head {
+    display: table-row-group;
+  }
+
+  .md-row {
+    display: table-row;
+
+  }
+
+  .md-cell {
+    display: table-cell;
+  }
+
+  .md-column {
+    font-weight: bold;
+    color: #757575;
+    font-size: 12px;
+    border-top: solid 1px #eee;
+    line-height: 40px;
+    cursor: pointer;
+  }
+
+  .md-body {
+
+  }
+
+  .md-head > .md-row {
+    height: 40px;
+  }
+
+  .md-body > .md-row,
+  .md-foot > .md-row {
     height: 48px;
   }
 
-  thead.md-head + .md-table-progress md-progress-linear {
+  .md-head + .md-table-progress md-progress-linear {
     top: -3px;
   }
 
-  .md-table-progress th {
+  .md-table-progress > div  {
     padding: 0;
 
     md-progress-linear {
@@ -66,7 +99,7 @@ table.md-table {
     }
   }
 
-  th.md-column {
+  .md-column {
     color: @md-dark-secondary;
     font-size: 12px;
     font-weight: bold;
@@ -116,7 +149,7 @@ table.md-table {
     }
   }
 
-  tr.md-row {
+  .md-row {
     &[ng\:repeat].ng-leave,
     &[ng-repeat].ng-leave,
     &[x-ng-repeat].ng-leave,
@@ -125,7 +158,7 @@ table.md-table {
     }
   }
 
-  &.md-row-select tbody.md-body > tr.md-row {
+  &.md-row-select .md-body > tr.md-row {
     transition: background-color 0.2s;
 
     &:not([disabled]):hover {
@@ -137,8 +170,8 @@ table.md-table {
     }
   }
 
-  &.md-row-select td.md-cell,
-  &.md-row-select th.md-column {
+  &.md-row-select .md-cell,
+  &.md-row-select .md-column {
     &:first-child {
       width: 20px;
       padding: 0 0 0 24px;
@@ -153,8 +186,8 @@ table.md-table {
     }
   }
 
-  &:not(.md-row-select) td.md-cell,
-  &:not(.md-row-select) th.md-column {
+  &:not(.md-row-select) .md-cell,
+  &:not(.md-row-select) .md-column {
     &:first-child {
       padding: 0 24px;
     }
@@ -164,8 +197,8 @@ table.md-table {
     }
   }
 
-  td.md-cell,
-  th.md-column {
+  .md-cell,
+  .md-column {
     vertical-align: middle;
     text-align: left;
 
@@ -195,11 +228,11 @@ table.md-table {
     }
   }
 
-  td.md-cell {
+  .md-cell {
     color: @md-dark;
     font-size: 13px;
     border-top: 1px @md-dark-divider solid;
-    
+
     &.md-numeric md-select {
       justify-content: flex-end;
 
@@ -224,3 +257,64 @@ table.md-table {
     }
   }
 }
+
+
+.tree-grid i.indented {
+  padding : 2px;
+}
+
+.tree-grid .level-1 .indented {
+  position : relative;
+  left     : 0;
+}
+
+.tree-grid .level-2 .indented {
+  position : relative;
+  left     : 20px;
+}
+
+.tree-grid .level-3 .indented {
+  position : relative;
+  left     : 40px;
+}
+
+.tree-grid .level-4 .indented {
+  position : relative;
+  left     : 60px;
+}
+
+.tree-grid .level-5 .indented {
+  position : relative;
+  left     : 80px;
+}
+
+.tree-grid .level-6 .indented {
+  position : relative;
+  left     : 100px;
+}
+
+.tree-grid .level-7 .indented {
+  position : relative;
+  left     : 120px;
+}
+
+.tree-grid .level-8 .indented {
+  position : relative;
+  left     : 140px;
+}
+
+.tree-grid .level-9 .indented {
+  position : relative;
+  left     : 160px;
+}
+
+.tree-grid .tree-icon,
+.tree-label {
+  cursor : pointer;
+}
+
+table.tree-grid {
+  max-height : 500px;
+  overflow-y : scroll;
+}
+

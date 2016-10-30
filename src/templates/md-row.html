@@ -1,0 +1,10 @@
+<div class="md-row">
+  <div class="md-cell" style="width: 48px;">
+    <md-button class="indented md-icon-button" ng-click="user_clicks_branch(row.branch)" ng-if="row.branch.children.length > 0">
+      <i ng-class="row.tree_icon" ng-click="row.branch.expanded = !row.branch.expanded" class="material-icons">
+        {{row.branch.expanded ? 'expand_more' : 'expand_less'}}
+      </i>
+    </md-button>
+  </div>
+  <md-cell ng-repeat='col in cols'>{{row.branch[col.name]}}</md-cell>
+</div>

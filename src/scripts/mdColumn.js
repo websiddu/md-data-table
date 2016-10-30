@@ -4,125 +4,99 @@ angular.module('md.data.table').directive('mdColumn', mdColumn);
 
 function mdColumn($compile, $mdUtil) {
 
-  function compile(tElement) {
-    tElement.addClass('md-column');
-    return postLink;
-  }
-
-  function postLink(scope, element, attrs, ctrls) {
-    var headCtrl = ctrls.shift();
-    var tableCtrl = ctrls.shift();
-
-    function attachSortIcon() {
-      var sortIcon = angular.element('<md-icon md-svg-icon="arrow-up.svg">');
-
-      $compile(sortIcon.addClass('md-sort-icon').attr('ng-class', 'getDirection()'))(scope);
-
-      if(element.hasClass('md-numeric')) {
-        element.prepend(sortIcon);
-      } else {
-        element.append(sortIcon);
-      }
+    function compile(tElement) {
+        tElement.addClass('md-column');
     }
 
-    function detachSortIcon() {
-      Array.prototype.some.call(element.find('md-icon'), function (icon) {
-        return icon.classList.contains('md-sort-icon') && element[0].removeChild(icon);
-      });
+    function Link(scope, element, attrs, ctrl) {
+      scope.tableData = ctrl[1].tableData;
+      scope.cols = ctrl[1].tableData.cols;
     }
 
-    function disableSorting() {
-      detachSortIcon();
-      element.removeClass('md-sort').off('click', setOrder);
-    }
 
-    function enableSorting() {
-      attachSortIcon();
-      element.addClass('md-sort').on('click', setOrder);
-    }
 
-    function getIndex() {
-      return Array.prototype.indexOf.call(element.parent().children(), element[0]);
-    }
+    function Controller($scope) {
 
-    function isActive() {
-      return scope.orderBy && (headCtrl.order === scope.orderBy || headCtrl.order === '-' + scope.orderBy);
-    }
+        $scope.tableSort = function(col) {
+            if (col.sortDirection === "asc") {
+                sort_recursive($scope.tableData.rows, col, true);
+                col.sortDirection = "desc";
+            } else {
+                sort_recursive($scope.tableData.rows, col, false);
+                col.sortDirection = "asc";
+            }
+            col.sorted = true;
+            resetSorting(col);
+        };
 
-    function isNumeric() {
-      return attrs.mdNumeric === '' || scope.numeric;
-    }
+        var sort_recursive = function(elements, col, descending) {
+            elements.sort(sort_by(col, descending));
+            for (var i = 0; i < elements.length; i++) {
+                sort_recursive(elements[i].children, col, descending);
+            }
+        };
 
-    function setOrder() {
-      scope.$applyAsync(function () {
-        if(isActive()) {
-          headCtrl.order = scope.getDirection() === 'md-asc' ? '-' + scope.orderBy : scope.orderBy;
-        } else {
-          headCtrl.order = scope.getDirection() === 'md-asc' ? scope.orderBy : '-' + scope.orderBy;
+        var sort_by = function(col, descending) {
+
+            var direction = !descending ? 1 : -1;
+
+            if (col.sortingType === "custom" && typeof col.sortingFunc === "function") {
+                return function(a, b) {
+                    return col.sortingFunc(a, b) * direction;
+                };
+            }
+
+            var key = function(x) {
+                return (x[col.field] === null ? "" : x[col.field].toLowerCase());
+            };
+
+            switch (col.sortingType) {
+                case "number":
+                    key = function(x) {
+                        return parseFloat(x[col.field]);
+                    };
+                    break;
+                case "date":
+                    key = function(x) {
+                        return new Date(x[col.field]);
+                    };
+                    break;
+            }
+
+            return function(a, b) {
+                return a = key(a), b = key(b), direction * ((a > b) - (b > a));
+            };
         }
 
-        if(angular.isFunction(headCtrl.onReorder)) {
-          $mdUtil.nextTick(function () {
-            headCtrl.onReorder(headCtrl.order);
-          });
+        var resetSorting = function(sortedCol) {
+            var arraySize = $scope.cols.length;
+            for (var i = 0; i < arraySize; i++) {
+                var col = $scope.cols[i];
+                if (col.field != sortedCol.field) {
+                    col.sorted = false;
+                    col.sortDirection = "none";
+                }
+            }
         }
-      });
+
     }
 
-    function updateColumn(index, column) {
-      tableCtrl.$$columns[index] = column;
+    Controller.$inject = ['$scope']
 
-      if(column.numeric) {
-        element.addClass('md-numeric');
-      } else {
-        element.removeClass('md-numeric');
-      }
-    }
-
-    scope.getDirection = function () {
-      if(isActive()) {
-        return headCtrl.order.charAt(0) === '-' ? 'md-desc' : 'md-asc';
-      }
-
-      return attrs.mdDesc === '' || scope.$eval(attrs.mdDesc) ? 'md-desc' : 'md-asc';
+    return {
+        // compile: compile,
+        require: ['^^mdHead', '^^mdTable'],
+        restrict: 'E',
+        replace: true,
+        controller: Controller,
+        link: Link,
+        templateUrl: 'md-column.html',
+        scope: {
+            numeric: '=?mdNumeric',
+            orderBy: '@?mdOrderBy',
+            col: '=?'
+        }
     };
-
-    scope.$watch(isActive, function (active) {
-      if(active) {
-        element.addClass('md-active');
-      } else {
-        element.removeClass('md-active');
-      }
-    });
-
-    scope.$watch(getIndex, function (index) {
-      updateColumn(index, {'numeric': isNumeric()});
-    });
-
-    scope.$watch(isNumeric, function (numeric) {
-      updateColumn(getIndex(), {'numeric': numeric});
-    });
-
-    scope.$watch('orderBy', function (orderBy) {
-      if(orderBy) {
-        if(!element.hasClass('md-sort')) {
-          enableSorting();
-        }
-      } else if(element.hasClass('md-sort')) {
-        disableSorting();
-      }
-    });
-  }
-
-  return {
-    compile: compile,
-    require: ['^^mdHead', '^^mdTable'],
-    restrict: 'A',
-    scope: {
-      numeric: '=?mdNumeric',
-      orderBy: '@?mdOrderBy'
-    }
-  };
 }
 
 mdColumn.$inject = ['$compile', '$mdUtil'];

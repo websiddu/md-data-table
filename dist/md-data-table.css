@@ -2,12 +2,10 @@ md-backdrop.md-edit-dialog-backdrop {
   z-index: 80;
 }
 md-edit-dialog {
-  display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-flex-direction: column;
-      -ms-flex-direction: column;
-          flex-direction: column;
+  -ms-flex-direction: column;
+      flex-direction: column;
   position: fixed;
   z-index: 81;
   background-color: #f9f9f9;
@@ -50,18 +48,14 @@ md-edit-dialog > .md-actions .md-button + .md-button {
   margin-left: 8px;
 }
 .md-table-pagination {
-  display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-align-items: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-justify-content: flex-end;
-      -ms-flex-pack: end;
-          justify-content: flex-end;
-  -webkit-flex-wrap: wrap-reverse;
-      -ms-flex-wrap: wrap-reverse;
-          flex-wrap: wrap-reverse;
+  -ms-flex-align: center;
+      align-items: center;
+  -ms-flex-pack: end;
+      justify-content: flex-end;
+  -ms-flex-wrap: wrap-reverse;
+      flex-wrap: wrap-reverse;
   box-sizing: border-box;
   padding: 0 24px;
   font-size: 12px;
@@ -69,38 +63,32 @@ md-edit-dialog > .md-actions .md-button + .md-button {
   border-top: 1px rgba(0, 0, 0, 0.12) solid;
 }
 .md-table-pagination md-select {
-  -webkit-justify-content: flex-end;
-      -ms-flex-pack: end;
-          justify-content: flex-end;
+  -ms-flex-pack: end;
+      justify-content: flex-end;
   min-width: 64px;
 }
 .md-table-pagination md-select:not([disabled]):focus .md-select-value {
   color: rgba(0, 0, 0, 0.54);
 }
 .md-table-pagination md-select .md-select-value {
-  -webkit-flex: 0 0 auto;
-      -ms-flex: 0 0 auto;
-          flex: 0 0 auto;
+  -ms-flex: 0 0 auto;
+      flex: 0 0 auto;
 }
 .md-table-pagination md-select .md-select-value span.md-select-icon {
-  -webkit-justify-content: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+  -ms-flex-pack: center;
+      justify-content: center;
   text-align: center;
   margin-right: -6px !important;
 }
 .md-table-pagination md-select .md-select-value span.md-select-icon:after {
   top: initial;
-  -webkit-transform: scaleY(0.5) scaleX(1);
-          transform: scaleY(0.5) scaleX(1);
+  transform: scaleY(0.5) scaleX(1);
 }
 .md-table-pagination > * {
-  display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-align-items: center;
-      -ms-flex-align: center;
-          align-items: center;
+  -ms-flex-align: center;
+      align-items: center;
   height: 56px;
 }
 .md-table-pagination > .buttons:not(:first-child),
@@ -128,22 +116,18 @@ md-select.md-table-select > .md-select-value {
 md-select.md-table-select > .md-select-value > span {
   display: block;
   height: auto;
-  -webkit-transform: none !important;
-          transform: none !important;
+  transform: none !important;
 }
 md-select.md-table-select > .md-select-value > span > .md-text {
   display: inherit;
   height: inherit;
-  -webkit-transform: inherit;
-          transform: inherit;
+  transform: inherit;
 }
 md-select.md-table-select > .md-select-value > span.md-select-icon {
-  display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-align-items: center;
-      -ms-flex-align: center;
-          align-items: center;
+  -ms-flex-align: center;
+      align-items: center;
   height: 24px;
   margin: 0;
 }
@@ -220,175 +204,237 @@ md-table-container {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
 }
-table.md-table {
+.md-table {
   width: 100%;
   border-spacing: 0;
   overflow: hidden;
+  display: table;
 }
-table.md-table thead.md-head > tr.md-row {
-  height: 56px;
+.md-table .md-head .md-column {
+  display: table-cell;
 }
-table.md-table tbody.md-body > tr.md-row,
-table.md-table tfoot.md-foot > tr.md-row {
+.md-table .md-body,
+.md-table .md-head {
+  display: table-row-group;
+}
+.md-table .md-row {
+  display: table-row;
+}
+.md-table .md-cell {
+  display: table-cell;
+}
+.md-table .md-column {
+  font-weight: bold;
+  color: #757575;
+  font-size: 12px;
+  border-top: solid 1px #eee;
+  line-height: 40px;
+  cursor: pointer;
+}
+.md-table .md-head > .md-row {
+  height: 40px;
+}
+.md-table .md-body > .md-row,
+.md-table .md-foot > .md-row {
   height: 48px;
 }
-table.md-table thead.md-head + .md-table-progress md-progress-linear {
+.md-table .md-head + .md-table-progress md-progress-linear {
   top: -3px;
 }
-table.md-table .md-table-progress th {
+.md-table .md-table-progress > div {
   padding: 0;
 }
-table.md-table .md-table-progress th md-progress-linear {
+.md-table .md-table-progress > div md-progress-linear {
   height: 0;
   transition: opacity 1s;
 }
-table.md-table .md-table-progress th md-progress-linear.ng-hide {
+.md-table .md-table-progress > div md-progress-linear.ng-hide {
   opacity: 0;
 }
-table.md-table .md-table-progress th md-progress-linear > .md-container {
+.md-table .md-table-progress > div md-progress-linear > .md-container {
   height: 3px;
   top: 0;
   transition: none;
 }
-table.md-table .md-table-progress th md-progress-linear > .md-container > .md-bar {
+.md-table .md-table-progress > div md-progress-linear > .md-container > .md-bar {
   height: 3px;
 }
-table.md-table th.md-column {
+.md-table .md-column {
   color: rgba(0, 0, 0, 0.54);
   font-size: 12px;
   font-weight: bold;
   white-space: nowrap;
 }
-table.md-table th.md-column.md-sort {
+.md-table .md-column.md-sort {
   cursor: pointer;
 }
-table.md-table th.md-column md-icon {
+.md-table .md-column md-icon {
   height: 16px;
   width: 16px;
   font-size: 16px !important;
   line-height: 16px !important;
 }
-table.md-table th.md-column md-icon.md-sort-icon {
+.md-table .md-column md-icon.md-sort-icon {
   color: rgba(0, 0, 0, 0.26);
   opacity: 0;
-  transition: -webkit-transform 0.25s, opacity 0.25s;
   transition: transform 0.25s, opacity 0.25s;
 }
-table.md-table th.md-column md-icon.md-sort-icon.md-asc {
-  -webkit-transform: rotate(0deg);
-          transform: rotate(0deg);
+.md-table .md-column md-icon.md-sort-icon.md-asc {
+  transform: rotate(0deg);
 }
-table.md-table th.md-column md-icon.md-sort-icon.md-desc {
-  -webkit-transform: rotate(180deg);
-          transform: rotate(180deg);
+.md-table .md-column md-icon.md-sort-icon.md-desc {
+  transform: rotate(180deg);
 }
-table.md-table th.md-column md-icon:not(:first-child) {
+.md-table .md-column md-icon:not(:first-child) {
   margin-left: 8px;
 }
-table.md-table th.md-column md-icon:not(:last-child) {
+.md-table .md-column md-icon:not(:last-child) {
   margin-right: 8px;
 }
-table.md-table th.md-column.md-active,
-table.md-table th.md-column.md-active md-icon {
+.md-table .md-column.md-active,
+.md-table .md-column.md-active md-icon {
   color: rgba(0, 0, 0, 0.87);
 }
-table.md-table th.md-column:hover md-icon.md-sort-icon,
-table.md-table th.md-column.md-active md-icon.md-sort-icon {
+.md-table .md-column:hover md-icon.md-sort-icon,
+.md-table .md-column.md-active md-icon.md-sort-icon {
   opacity: 1;
 }
-table.md-table tr.md-row[ng\:repeat].ng-leave,
-table.md-table tr.md-row[ng-repeat].ng-leave,
-table.md-table tr.md-row[x-ng-repeat].ng-leave,
-table.md-table tr.md-row[data-ng-repeat].ng-leave {
+.md-table .md-row[ng\:repeat].ng-leave,
+.md-table .md-row[ng-repeat].ng-leave,
+.md-table .md-row[x-ng-repeat].ng-leave,
+.md-table .md-row[data-ng-repeat].ng-leave {
   display: none;
 }
-table.md-table.md-row-select tbody.md-body > tr.md-row {
+.md-table.md-row-select .md-body > tr.md-row {
   transition: background-color 0.2s;
 }
-table.md-table.md-row-select tbody.md-body > tr.md-row:not([disabled]):hover {
+.md-table.md-row-select .md-body > tr.md-row:not([disabled]):hover {
   background-color: #eeeeee !important;
 }
-table.md-table.md-row-select tbody.md-body > tr.md-row.md-selected {
+.md-table.md-row-select .md-body > tr.md-row.md-selected {
   background-color: #f5f5f5;
 }
-table.md-table.md-row-select td.md-cell:first-child,
-table.md-table.md-row-select th.md-column:first-child {
+.md-table.md-row-select .md-cell:first-child,
+.md-table.md-row-select .md-column:first-child {
   width: 20px;
   padding: 0 0 0 24px;
 }
-table.md-table.md-row-select td.md-cell:nth-child(2),
-table.md-table.md-row-select th.md-column:nth-child(2) {
+.md-table.md-row-select .md-cell:nth-child(2),
+.md-table.md-row-select .md-column:nth-child(2) {
   padding: 0 24px;
 }
-table.md-table.md-row-select td.md-cell:nth-child(n+3):nth-last-child(n+2),
-table.md-table.md-row-select th.md-column:nth-child(n+3):nth-last-child(n+2) {
+.md-table.md-row-select .md-cell:nth-child(n+3):nth-last-child(n+2),
+.md-table.md-row-select .md-column:nth-child(n+3):nth-last-child(n+2) {
   padding: 0 56px 0 0;
 }
-table.md-table:not(.md-row-select) td.md-cell:first-child,
-table.md-table:not(.md-row-select) th.md-column:first-child {
+.md-table:not(.md-row-select) .md-cell:first-child,
+.md-table:not(.md-row-select) .md-column:first-child {
   padding: 0 24px;
 }
-table.md-table:not(.md-row-select) td.md-cell:nth-child(n+2):nth-last-child(n+2),
-table.md-table:not(.md-row-select) th.md-column:nth-child(n+2):nth-last-child(n+2) {
+.md-table:not(.md-row-select) .md-cell:nth-child(n+2):nth-last-child(n+2),
+.md-table:not(.md-row-select) .md-column:nth-child(n+2):nth-last-child(n+2) {
   padding: 0 56px 0 0;
 }
-table.md-table td.md-cell,
-table.md-table th.md-column {
+.md-table .md-cell,
+.md-table .md-column {
   vertical-align: middle;
   text-align: left;
 }
-table.md-table td.md-cell > *,
-table.md-table th.md-column > * {
+.md-table .md-cell > *,
+.md-table .md-column > * {
   vertical-align: middle;
 }
-table.md-table td.md-cell:last-child,
-table.md-table th.md-column:last-child {
+.md-table .md-cell:last-child,
+.md-table .md-column:last-child {
   padding: 0 24px 0 0;
 }
-table.md-table td.md-cell.md-clickable,
-table.md-table th.md-column.md-clickable {
+.md-table .md-cell.md-clickable,
+.md-table .md-column.md-clickable {
   cursor: pointer;
 }
-table.md-table td.md-cell.md-clickable:focus,
-table.md-table th.md-column.md-clickable:focus {
+.md-table .md-cell.md-clickable:focus,
+.md-table .md-column.md-clickable:focus {
   outline: none;
 }
-table.md-table td.md-cell.md-numeric,
-table.md-table th.md-column.md-numeric {
+.md-table .md-cell.md-numeric,
+.md-table .md-column.md-numeric {
   text-align: right;
 }
-table.md-table td.md-cell md-checkbox,
-table.md-table th.md-column md-checkbox {
+.md-table .md-cell md-checkbox,
+.md-table .md-column md-checkbox {
   margin: 0;
   width: 20px;
 }
-table.md-table td.md-cell {
+.md-table .md-cell {
   color: rgba(0, 0, 0, 0.87);
   font-size: 13px;
   border-top: 1px rgba(0, 0, 0, 0.12) solid;
 }
-table.md-table td.md-cell.md-numeric md-select {
-  -webkit-justify-content: flex-end;
-      -ms-flex-pack: end;
-          justify-content: flex-end;
+.md-table .md-cell.md-numeric md-select {
+  -ms-flex-pack: end;
+      justify-content: flex-end;
 }
-table.md-table td.md-cell.md-numeric md-select .md-select-value {
-  -webkit-flex: 0 0 auto;
-      -ms-flex: 0 0 auto;
-          flex: 0 0 auto;
+.md-table .md-cell.md-numeric md-select .md-select-value {
+  -ms-flex: 0 0 auto;
+      flex: 0 0 auto;
 }
-table.md-table td.md-cell.md-placeholder {
+.md-table .md-cell.md-placeholder {
   color: rgba(0, 0, 0, 0.26);
 }
-table.md-table td.md-cell md-select > .md-select-value > span.md-select-icon {
-  -webkit-justify-content: flex-end;
-      -ms-flex-pack: end;
-          justify-content: flex-end;
+.md-table .md-cell md-select > .md-select-value > span.md-select-icon {
+  -ms-flex-pack: end;
+      justify-content: flex-end;
   color: rgba(0, 0, 0, 0.54);
   width: 18px;
   text-align: right;
 }
-table.md-table td.md-cell md-select > .md-select-value > span.md-select-icon:after {
-  -webkit-transform: scaleY(0.4) scaleX(0.8);
-          transform: scaleY(0.4) scaleX(0.8);
+.md-table .md-cell md-select > .md-select-value > span.md-select-icon:after {
+  transform: scaleY(0.4) scaleX(0.8);
+}
+.tree-grid i.indented {
+  padding: 2px;
+}
+.tree-grid .level-1 .indented {
+  position: relative;
+  left: 0;
+}
+.tree-grid .level-2 .indented {
+  position: relative;
+  left: 20px;
+}
+.tree-grid .level-3 .indented {
+  position: relative;
+  left: 40px;
+}
+.tree-grid .level-4 .indented {
+  position: relative;
+  left: 60px;
+}
+.tree-grid .level-5 .indented {
+  position: relative;
+  left: 80px;
+}
+.tree-grid .level-6 .indented {
+  position: relative;
+  left: 100px;
+}
+.tree-grid .level-7 .indented {
+  position: relative;
+  left: 120px;
+}
+.tree-grid .level-8 .indented {
+  position: relative;
+  left: 140px;
+}
+.tree-grid .level-9 .indented {
+  position: relative;
+  left: 160px;
+}
+.tree-grid .tree-icon,
+.tree-label {
+  cursor: pointer;
+}
+table.tree-grid {
+  max-height: 500px;
+  overflow-y: scroll;
 }
