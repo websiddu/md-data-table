@@ -1,0 +1,26 @@
+<div class="md-table-filter-chips">
+  <div class="md-table-filter-chip">
+    <md-table-filter-condition-panel ng-if='selectedItem && selectedItem.isPanelHidden'></md-table-filter-condition-panel>
+    <md-autocomplete
+            md-no-cache="noCache"
+            md-autoselect="true"
+            md-autofocus="true"
+            md-selected-item="selectedItem"
+            md-search-text-change="searchTextChange(searchText)"
+            md-search-text="searchText"
+            md-selected-item-change="selectedItemChange(item)"
+            md-items="item in querySearch(searchText)"
+            md-item-text="item.name"
+            md-select-on-match="true"
+            md-min-length="0"
+            placeholder="">
+          <md-item-template>
+            <span md-highlight-text="searchText" md-highlight-flags="i">{{item.name}}</span>
+          </md-item-template>
+          <md-not-found>
+            No states matching "{{searchText}}" were found.
+            <a ng-click="ctrl.newState(ctrl.searchText)">Create a new one!</a>
+          </md-not-found>
+        </md-autocomplete>
+    </div>
+</div>

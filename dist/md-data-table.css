@@ -188,6 +188,80 @@ md-toolbar.md-table-toolbar .md-toolbar-tools > .md-button.md-icon-button:first-
 md-toolbar.md-table-toolbar .md-toolbar-tools > .md-button.md-icon-button:last-child {
   margin-right: -12px;
 }
+.filtersets {
+  display: -ms-flexbox;
+  display: flex;
+  border-bottom: solid 1px #eee;
+}
+.filtersets .filterset {
+  margin-right: 24px;
+}
+.filterchips {
+  display: -ms-flexbox;
+  display: flex;
+}
+.filterheader {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-align: center;
+      align-items: center;
+  -ms-flex-negative: 0;
+      flex-shrink: 0;
+  color: #616161;
+  height: 48px;
+  margin-left: 16px;
+  margin-right: 8px;
+}
+.chipscontainer {
+  -ms-flex: 1;
+      flex: 1;
+}
+.md-table-filter-chips {
+  display: -ms-flexbox;
+  display: flex;
+}
+.md-table-filter-chip {
+  position: relative;
+}
+.md-table-filter-condition-panel {
+  display: block;
+  position: absolute;
+  left: 0;
+}
+md-autocomplete {
+  display: block;
+  left: 0;
+  position: absolute;
+}
+md-autocomplete md-autocomplete-wrap.md-whiteframe-z1 {
+  box-shadow: none;
+}
+.md-table-filter-condition-panel {
+  box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+  min-width: 200px;
+  z-index: 10;
+}
+.md-table-filter-condition-panel md-toolbar {
+  border-radius: 2px 2px 0 0;
+  box-shadow: none;
+  display: -ms-flexbox;
+  display: flex;
+  height: 48px;
+  min-height: 48px;
+}
+.md-table-filter-condition-panel md-toolbar .actions {
+  margin-right: -20px;
+}
+.md-table-filter-condition-panel md-toolbar h2 {
+  font-size: 15px;
+  -ms-flex: 1;
+      flex: 1;
+}
+.md-table-filter-condition-panel .content {
+  background: #fff;
+  border-radius: 0 0 2px 2px;
+  display: block;
+}
 md-card > md-toolbar.md-table-toolbar:first-child,
 md-card > md-table-container:first-child {
   border-top-left-radius: 2px;

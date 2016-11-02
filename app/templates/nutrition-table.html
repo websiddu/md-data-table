@@ -1,29 +1,34 @@
-<md-toolbar class="md-table-toolbar md-default" ng-show="!options.rowSelection || !selected.length">
-<div class="md-toolbar-tools">
-  <span>Nutrition</span>
-  <span flex></span>
-  <md-button class="md-icon-button" ng-click="loadStuff()">
-  <md-icon>refresh</md-icon>
-  </md-button>
-  <md-button class="md-icon-button">
-  <md-icon>filter_list</md-icon>
-  </md-button>
-  <md-button class="md-icon-button">
-  <md-icon>more_vert</md-icon>
-  </md-button>
-</div>
-</md-toolbar>
-<md-toolbar class="md-table-toolbar alternate" ng-show="options.rowSelection && selected.length">
-<div class="md-toolbar-tools">
-  <span>{{selected.length}} {{selected.length > 1 ? 'items' : 'item'}} selected</span>
-  <span flex></span>
-  <md-button class="md-icon-button">
-  <md-icon>delete</md-icon>
-  </md-button>
-</div>
-</md-toolbar>
-<md-table-container>
-  <md-table table-data="tableData"></md-table>
-</md-table-container>
+<md-table-filter filters="filters"></md-table-filter>
+<md-card>
+  <md-toolbar class="md-table-toolbar md-default" ng-show="!options.rowSelection || !selected.length">
+    <div class="md-toolbar-tools">
+      <span>Nutrition</span>
+      <span flex></span>
+      <md-button class="md-icon-button" ng-click="loadStuff()">
+      <md-icon>refresh</md-icon>
+      </md-button>
+      <md-button class="md-icon-button">
+      <md-icon>filter_list</md-icon>
+      </md-button>
+      <md-button class="md-icon-button">
+      <md-icon>more_vert</md-icon>
+      </md-button>
+    </div>
+  </md-toolbar>
 
-<data-md-table-pagination md-limit="query.limit" md-limit-options="limitOptions" md-page="query.page" md-total="{{desserts.count}}" md-on-paginate="onPaginate" md-page-select="options.pageSelect" md-boundary-links="options.boundaryLinks"></data-md-table-pagination>
+  <md-toolbar class="md-table-toolbar alternate" ng-show="options.rowSelection && selected.length">
+    <div class="md-toolbar-tools">
+      <span>{{selected.length}} {{selected.length > 1 ? 'items' : 'item'}} selected</span>
+      <span flex></span>
+      <md-button class="md-icon-button">
+      <md-icon>delete</md-icon>
+      </md-button>
+    </div>
+  </md-toolbar>
+
+  <md-table-container>
+    <md-table table-data="tableData"></md-table>
+  </md-table-container>
+  <data-md-table-pagination md-limit="query.limit" md-limit-options="limitOptions" md-page="query.page" md-total="{{desserts.count}}" md-on-paginate="onPaginate" md-page-select="options.pageSelect" md-boundary-links="options.boundaryLinks">
+  </data-md-table-pagination>
+</md-card>

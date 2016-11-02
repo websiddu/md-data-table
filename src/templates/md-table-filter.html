@@ -1,0 +1,38 @@
+<md-card>
+  <div class="md-filters">
+    <div class="filtersets">
+      <div class="filterset">
+        <md-select ng-model="filter.filterset.predefined">
+          <md-option ng-value="0" selected>All companies</md-option>
+        </md-select>
+      </div>
+      <div class="filterset">
+        <md-input-container>
+          <label for="">Quarter </label>
+          <md-select ng-model="filter.filterset.quarter">
+            <md-option ng-value="0" selected>Q4 2016</md-option>
+            <md-option ng-value="1">Q3 2016</md-option>
+          </md-select>
+        </md-input-container>
+      </div>
+      <div class="filterset">
+        <md-input-container>
+          <label for="">Companies </label>
+          <md-select ng-model="filter.filterset.companies">
+            <md-option ng-value="0" selected>Current</md-option>
+            <md-option ng-value="1">Future</md-option>
+          </md-select>
+        </md-input-container>
+      </div>
+    </div>
+    <div class="filterchips">
+      <div class="filterheader">
+        <span class="text-label">Filter</span>
+      </div>
+      <div class="chipscontainer">
+        <md-table-filter-chips filters="filters"></md-table-filter-chips>
+      </div>
+
+    </div>
+  </div>
+</md-card>

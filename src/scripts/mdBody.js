@@ -11,17 +11,10 @@ function mdBody() {
   function Controller($scope, $attrs) {
 
     $scope.expandingProperty = 'name';
-    $scope.colDefinitions = $scope.cols;
 
     var attrs = {};
 
-    attrs.iconExpand = attrs.iconExpand ? attrs.iconExpand : 'icon-plus  glyphicon glyphicon-plus  fa fa-plus';
-    attrs.iconCollapse = attrs.iconCollapse ? attrs.iconCollapse : 'icon-minus glyphicon glyphicon-minus fa fa-minus';
-    attrs.iconLeaf = attrs.iconLeaf ? attrs.iconLeaf : 'icon-file  glyphicon glyphicon-file  fa fa-file';
-    attrs.sortedAsc = attrs.sortedAsc ? attrs.sortedAsc : 'icon-file  glyphicon glyphicon-chevron-up  fa angle-up';
-    attrs.sortedDesc = attrs.sortedDesc ? attrs.sortedDesc : 'icon-file  glyphicon glyphicon-chevron-down  fa angle-down';
-    attrs.expandLevel = attrs.expandLevel ? attrs.expandLevel : '0';
-    var expand_level = parseInt(attrs.expandLevel, 10);
+    var expand_level = parseInt($attrs.expandLevel, 10);
 
     var for_each_branch = function(f) {
       var do_f, root_branch, _i, _len, _ref, _results;
@@ -187,15 +180,7 @@ function mdBody() {
         if (branch.expanded == null) {
           branch.expanded = false;
         }
-        if (!branch.children || branch.children.length === 0) {
-          tree_icon = branch.icons && branch.icons.iconLeaf || attrs.iconLeaf;
-        } else {
-          if (branch.expanded) {
-            tree_icon = branch.icons && branch.icons.iconCollapse || attrs.iconCollapse;
-          } else {
-            tree_icon = branch.icons && branch.icons.iconExpand || attrs.iconExpand;
-          }
-        }
+
         branch.level = level;
         $scope.tree_rows.push({
           level: level,

@@ -1,0 +1,21 @@
+<div class="md-table-filter-condition-panel">
+     <md-toolbar class="md-default">
+      <div class="md-toolbar-tools">
+        <h2>{{selectedItem.name}}</h2>
+        <div class="actions">
+          <md-button class="md-icon-button" ng-click="hidePanel()">
+            <i class="material-icons">
+              close
+            </i>
+          </md-button>
+        </div>
+      </div>
+    </md-toolbar>
+    <div class="content" flex layout-padding>
+      <md-input-container>
+        <label>Title</label>
+        <input ng-model="user.title">
+      </md-input-container>
+      <md-button>Apply</md-button>
+    </div>
+</div>

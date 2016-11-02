@@ -32,6 +32,27 @@ angular.module('nutritionApp')
         };
 
 
+        $scope.filters = {
+          available: [{
+            name: 'Company',
+            field: 'name',
+            type: 'string',
+            isPanelHidden: true
+          }, {
+            name: 'Id',
+            field: 'id',
+            type: 'number',
+            isPanelHidden: true
+          }, {
+            name: 'Owner',
+            field: 'owner',
+            type: 'string',
+            isPanelHidden: true
+          }]
+        }
+
+
+
         $scope.tableData = {};
 
         $http.get('companies.json').then(function(companies) {

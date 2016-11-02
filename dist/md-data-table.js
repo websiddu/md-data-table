@@ -7,7 +7,7 @@
 (function (window, angular, undefined) {
 'use strict';
 
-angular.module('md.table.templates', ['md-body.html', 'md-column.html', 'md-head.html', 'md-row.html', 'md-table-pagination.html', 'md-table-progress.html', 'md-table.html', 'arrow-up.svg', 'navigate-before.svg', 'navigate-first.svg', 'navigate-last.svg', 'navigate-next.svg']);
+angular.module('md.table.templates', ['md-body.html', 'md-column.html', 'md-head.html', 'md-row.html', 'md-table-filter-chips.html', 'md-table-filter-condition-panel.html', 'md-table-filter.html', 'md-table-pagination.html', 'md-table-progress.html', 'md-table.html', 'arrow-up.svg', 'navigate-before.svg', 'navigate-first.svg', 'navigate-last.svg', 'navigate-next.svg']);
 
 angular.module('md-body.html', []).run(['$templateCache', function($templateCache) {
   $templateCache.put('md-body.html',
@@ -50,6 +50,106 @@ angular.module('md-row.html', []).run(['$templateCache', function($templateCache
     '  </div>\n' +
     '  <md-cell ng-repeat=\'col in cols\'>{{row.branch[col.name]}}</md-cell>\n' +
     '</div>\n' +
+    '');
+}]);
+
+angular.module('md-table-filter-chips.html', []).run(['$templateCache', function($templateCache) {
+  $templateCache.put('md-table-filter-chips.html',
+    '<div class="md-table-filter-chips">\n' +
+    '  <div class="md-table-filter-chip">\n' +
+    '    <md-table-filter-condition-panel ng-if=\'selectedItem && selectedItem.isPanelHidden\'></md-table-filter-condition-panel>\n' +
+    '    <md-autocomplete\n' +
+    '            md-no-cache="noCache"\n' +
+    '            md-autoselect="true"\n' +
+    '            md-autofocus="true"\n' +
+    '            md-selected-item="selectedItem"\n' +
+    '            md-search-text-change="searchTextChange(searchText)"\n' +
+    '            md-search-text="searchText"\n' +
+    '            md-selected-item-change="selectedItemChange(item)"\n' +
+    '            md-items="item in querySearch(searchText)"\n' +
+    '            md-item-text="item.name"\n' +
+    '            md-select-on-match="true"\n' +
+    '            md-min-length="0"\n' +
+    '            placeholder="">\n' +
+    '          <md-item-template>\n' +
+    '            <span md-highlight-text="searchText" md-highlight-flags="i">{{item.name}}</span>\n' +
+    '          </md-item-template>\n' +
+    '          <md-not-found>\n' +
+    '            No states matching "{{searchText}}" were found.\n' +
+    '            <a ng-click="ctrl.newState(ctrl.searchText)">Create a new one!</a>\n' +
+    '          </md-not-found>\n' +
+    '        </md-autocomplete>\n' +
+    '    </div>\n' +
+    '</div>\n' +
+    '');
+}]);
+
+angular.module('md-table-filter-condition-panel.html', []).run(['$templateCache', function($templateCache) {
+  $templateCache.put('md-table-filter-condition-panel.html',
+    '<div class="md-table-filter-condition-panel">\n' +
+    '     <md-toolbar class="md-default">\n' +
+    '      <div class="md-toolbar-tools">\n' +
+    '        <h2>{{selectedItem.name}}</h2>\n' +
+    '        <div class="actions">\n' +
+    '          <md-button class="md-icon-button" ng-click="hidePanel()">\n' +
+    '            <i class="material-icons">\n' +
+    '              close\n' +
+    '            </i>\n' +
+    '          </md-button>\n' +
+    '        </div>\n' +
+    '      </div>\n' +
+    '    </md-toolbar>\n' +
+    '    <div class="content" flex layout-padding>\n' +
+    '      <md-input-container>\n' +
+    '        <label>Title</label>\n' +
+    '        <input ng-model="user.title">\n' +
+    '      </md-input-container>\n' +
+    '      <md-button>Apply</md-button>\n' +
+    '    </div>\n' +
+    '</div>\n' +
+    '');
+}]);
+
+angular.module('md-table-filter.html', []).run(['$templateCache', function($templateCache) {
+  $templateCache.put('md-table-filter.html',
+    '<md-card>\n' +
+    '  <div class="md-filters">\n' +
+    '    <div class="filtersets">\n' +
+    '      <div class="filterset">\n' +
+    '        <md-select ng-model="filter.filterset.predefined">\n' +
+    '          <md-option ng-value="0" selected>All companies</md-option>\n' +
+    '        </md-select>\n' +
+    '      </div>\n' +
+    '      <div class="filterset">\n' +
+    '        <md-input-container>\n' +
+    '          <label for="">Quarter </label>\n' +
+    '          <md-select ng-model="filter.filterset.quarter">\n' +
+    '            <md-option ng-value="0" selected>Q4 2016</md-option>\n' +
+    '            <md-option ng-value="1">Q3 2016</md-option>\n' +
+    '          </md-select>\n' +
+    '        </md-input-container>\n' +
+    '      </div>\n' +
+    '      <div class="filterset">\n' +
+    '        <md-input-container>\n' +
+    '          <label for="">Companies </label>\n' +
+    '          <md-select ng-model="filter.filterset.companies">\n' +
+    '            <md-option ng-value="0" selected>Current</md-option>\n' +
+    '            <md-option ng-value="1">Future</md-option>\n' +
+    '          </md-select>\n' +
+    '        </md-input-container>\n' +
+    '      </div>\n' +
+    '    </div>\n' +
+    '    <div class="filterchips">\n' +
+    '      <div class="filterheader">\n' +
+    '        <span class="text-label">Filter</span>\n' +
+    '      </div>\n' +
+    '      <div class="chipscontainer">\n' +
+    '        <md-table-filter-chips filters="filters"></md-table-filter-chips>\n' +
+    '      </div>\n' +
+    '\n' +
+    '    </div>\n' +
+    '  </div>\n' +
+    '</md-card>\n' +
     '');
 }]);
 
@@ -151,17 +251,10 @@ function mdBody() {
   function Controller($scope, $attrs) {
 
     $scope.expandingProperty = 'name';
-    $scope.colDefinitions = $scope.cols;
 
     var attrs = {};
 
-    attrs.iconExpand = attrs.iconExpand ? attrs.iconExpand : 'icon-plus  glyphicon glyphicon-plus  fa fa-plus';
-    attrs.iconCollapse = attrs.iconCollapse ? attrs.iconCollapse : 'icon-minus glyphicon glyphicon-minus fa fa-minus';
-    attrs.iconLeaf = attrs.iconLeaf ? attrs.iconLeaf : 'icon-file  glyphicon glyphicon-file  fa fa-file';
-    attrs.sortedAsc = attrs.sortedAsc ? attrs.sortedAsc : 'icon-file  glyphicon glyphicon-chevron-up  fa angle-up';
-    attrs.sortedDesc = attrs.sortedDesc ? attrs.sortedDesc : 'icon-file  glyphicon glyphicon-chevron-down  fa angle-down';
-    attrs.expandLevel = attrs.expandLevel ? attrs.expandLevel : '0';
-    var expand_level = parseInt(attrs.expandLevel, 10);
+    var expand_level = parseInt($attrs.expandLevel, 10);
 
     var for_each_branch = function(f) {
       var do_f, root_branch, _i, _len, _ref, _results;
@@ -327,15 +420,7 @@ function mdBody() {
         if (branch.expanded == null) {
           branch.expanded = false;
         }
-        if (!branch.children || branch.children.length === 0) {
-          tree_icon = branch.icons && branch.icons.iconLeaf || attrs.iconLeaf;
-        } else {
-          if (branch.expanded) {
-            tree_icon = branch.icons && branch.icons.iconCollapse || attrs.iconCollapse;
-          } else {
-            tree_icon = branch.icons && branch.icons.iconExpand || attrs.iconExpand;
-          }
-        }
+
         branch.level = level;
         $scope.tree_rows.push({
           level: level,
@@ -1645,6 +1730,141 @@ function mdTable() {
     }
   };
 }
+
+
+angular.module('md.data.table').directive('mdTableFilter', mdTableFilter);
+
+function mdTableFilter() {
+
+  function compile(tElement) {
+    tElement.addClass('md-table-filter');
+  }
+
+  function Controller($scope) {
+    console.log($scope.filters);
+
+
+  }
+
+
+  function Link(scope, element, attrs, ctrl) {
+
+  }
+
+
+  Controller.$inject = ['$scope'];
+
+  return {
+    compile: compile,
+    controller: Controller,
+    controllerAs: '$filter',
+    restrict: 'E',
+    link: Link,
+    scope: {
+      filters: '=?'
+    },
+    templateUrl: 'md-table-filter.html'
+  };
+}
+
+
+  'use strict';
+
+angular.module('md.data.table').directive('mdTableFilterChips', mdTableFilterChips);
+
+function mdTableFilterChips() {
+
+
+  function Controller($scope) {
+
+    $scope.searchText = '';
+    $scope.chip = '';
+    $scope.filter = null;
+
+    $scope.querySearch = function(query) {
+      return query ? $scope.filters.available.filter( createFilterFor(query) ) : $scope.filters.available;
+    }
+
+    $scope.selectedItemChange = function(item) {
+      if(item) {
+        item.isPanelHidden = true;
+      }
+    }
+
+    $scope.cleanCurrent = function() {
+      $scope.selectedItem = null;
+    }
+
+
+    var createFilterFor = function(query) {
+      var lowercaseQuery = angular.lowercase(query);
+
+      return function filterFn(item) {
+        return (angular.lowercase(item.name).indexOf(lowercaseQuery) === 0);
+      };
+
+    }
+
+  }
+
+
+  function Link(scope, element, attrs, ctrl) {
+
+  }
+
+  Controller.$inject = ['$scope'];
+
+  return {
+    controller: Controller,
+    restrict: 'E',
+    link: Link,
+    scope: {
+      filters: '=?'
+    },
+    templateUrl: 'md-table-filter-chips.html'
+  };
+}
+
+
+  'use strict';
+
+angular.module('md.data.table').directive('mdTableFilterConditionPanel', mdTableFilterConditionPanel);
+
+function mdTableFilterConditionPanel() {
+
+  function Controller($scope) {
+
+
+    $scope.hidePanel = function() {
+      $scope.cleanCurrent();
+    }
+
+  }
+
+
+  Controller.$inject = ['$scope'];
+
+  return {
+    controller: Controller,
+    restrict: 'E',
+    replace: true,
+    templateUrl: 'md-table-filter-condition-panel.html'
+  };
+}
+
+
+angular.module('md.data.table').service('mdTableFilterService', mdTableFilterService);
+
+function mdTableFilterService() {
+
+  return {
+
+  }
+
+}
+
+
+
 
 
 angular.module('md.data.table').directive('mdTablePagination', mdTablePagination);
