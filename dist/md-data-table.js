@@ -1795,7 +1795,6 @@ function mdTableFilterChips() {
       $scope.selectedItem = null;
     }
 
-
     var createFilterFor = function(query) {
       var lowercaseQuery = angular.lowercase(query);
 
