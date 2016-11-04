@@ -36,7 +36,6 @@ function mdTableFilterChips() {
 
   }
 
-
   function Link(scope, element, attrs, ctrl) {
 
   }

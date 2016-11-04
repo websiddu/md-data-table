@@ -48,7 +48,9 @@ angular.module('md-row.html', []).run(['$templateCache', function($templateCache
     '      </i>\n' +
     '    </md-button>\n' +
     '  </div>\n' +
-    '  <md-cell ng-repeat=\'col in cols\'>{{row.branch[col.name]}}</md-cell>\n' +
+    '  <md-cell ng-repeat=\'col in cols\'>\n' +
+    '      {{row.branch[col.field]}}\n' +
+    '  </md-cell>\n' +
     '</div>\n' +
     '');
 }]);
@@ -122,7 +124,6 @@ angular.module('md-table-filter.html', []).run(['$templateCache', function($temp
     '      </div>\n' +
     '      <div class="filterset">\n' +
     '        <md-input-container>\n' +
-    '          <label for="">Quarter </label>\n' +
     '          <md-select ng-model="filter.filterset.quarter">\n' +
     '            <md-option ng-value="0" selected>Q4 2016</md-option>\n' +
     '            <md-option ng-value="1">Q3 2016</md-option>\n' +
@@ -131,7 +132,6 @@ angular.module('md-table-filter.html', []).run(['$templateCache', function($temp
     '      </div>\n' +
     '      <div class="filterset">\n' +
     '        <md-input-container>\n' +
-    '          <label for="">Companies </label>\n' +
     '          <md-select ng-model="filter.filterset.companies">\n' +
     '            <md-option ng-value="0" selected>Current</md-option>\n' +
     '            <md-option ng-value="1">Future</md-option>\n' +
@@ -1805,7 +1805,6 @@ function mdTableFilterChips() {
     }
 
   }
-
 
   function Link(scope, element, attrs, ctrl) {
 

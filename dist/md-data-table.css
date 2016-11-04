@@ -192,9 +192,18 @@ md-toolbar.md-table-toolbar .md-toolbar-tools > .md-button.md-icon-button:last-c
   display: -ms-flexbox;
   display: flex;
   border-bottom: solid 1px #eee;
+  padding: 4px 16px;
 }
 .filtersets .filterset {
   margin-right: 24px;
+}
+.filtersets .filterset md-select {
+  margin: 0;
+  padding: 0;
+}
+.filtersets .filterset md-input-container {
+  margin: 0;
+  padding: 0;
 }
 .filterchips {
   display: -ms-flexbox;

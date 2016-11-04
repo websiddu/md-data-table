@@ -6,5 +6,7 @@
       </i>
     </md-button>
   </div>
-  <md-cell ng-repeat='col in cols'>{{row.branch[col.name]}}</md-cell>
+  <md-cell ng-repeat='col in cols'>
+      {{row.branch[col.field]}}
+  </md-cell>
 </div>
