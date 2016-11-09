@@ -24,6 +24,9 @@ angular.module('md-cell.html', []).run(['$templateCache', function($templateCach
     '  <div ng-if="col.type == \'currency microusd\'">\n' +
     '    {{getCurrency(row.branch[col.field])}}\n' +
     '  </div>\n' +
+    '  <div ng-if="col.type == \'date\'">\n' +
+    '    {{getDate(row.branch[col.field])}}\n' +
+    '  </div>\n' +
     '  <div ng-if="col.type == \'number\'">\n' +
     '    {{row.branch[col.field]}}\n' +
     '  </div>\n' +
@@ -526,6 +529,13 @@ function mdCell() {
       return numeral(number/1000000).format('$0.0a');
     }
 
+    $scope.getDate = function(date) {
+      if(!date) {
+        return '–'; 
+      }
+      var d = new Date(date); 
+      return moment(d).format('ll');
+    }
 
   }
 
