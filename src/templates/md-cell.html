@@ -1,0 +1,11 @@
+<div style="max-width: {{col.width}}px;" class="md-cell">
+  <div ng-if="col.type == 'currency microusd'">
+    {{getCurrency(row.branch[col.field])}}
+  </div>
+  <div ng-if="col.type == 'number'">
+    {{row.branch[col.field]}}
+  </div>
+  <div ng-if="col.type == 'string'">
+    {{row.branch[col.field]}}
+  </div>
+</div>

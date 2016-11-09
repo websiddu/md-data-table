@@ -11,13 +11,33 @@ function mdCell() {
       select.addClass('md-table-select').attr('md-container-class', 'md-table-select');
     }
 
-    tElement.addClass('md-cell');
-
     return postLink;
   }
 
   // empty controller to be bind properties to in postLink function
-  function Controller() {
+  function Controller($scope) {
+
+    numeral.language('en', {
+        delimiters: {
+            thousands: ' ',
+            decimal: '.'
+        },
+        abbreviations: {
+            thousand: 'K',
+            million: 'M',
+            billion: 'B',
+            trillion: 'T'
+        },
+        currency: {
+            symbol: '$'
+        }
+    });
+
+
+    $scope.getCurrency = function(number) {
+      return numeral(number/1000000).format('$0.0a');
+    }
+
 
   }
 
@@ -67,7 +87,9 @@ function mdCell() {
   return {
     controller: Controller,
     compile: compile,
+    replace: true,
     require: ['mdCell', '^^mdTable'],
-    restrict: 'E'
+    restrict: 'E',
+    templateUrl: 'md-cell.html'
   };
 }

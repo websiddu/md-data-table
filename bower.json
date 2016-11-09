@@ -30,6 +30,7 @@
   ],
   "dependencies": {
     "angular": "^1.4.0",
-    "angular-material": "^1.0.0"
+    "angular-material": "^1.0.0",
+    "numeral": "^1.5.3"
   }
 }

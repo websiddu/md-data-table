@@ -7,7 +7,7 @@
 (function (window, angular, undefined) {
 'use strict';
 
-angular.module('md.table.templates', ['md-body.html', 'md-column.html', 'md-head.html', 'md-row.html', 'md-table-filter-chips.html', 'md-table-filter-condition-panel.html', 'md-table-filter.html', 'md-table-pagination.html', 'md-table-progress.html', 'md-table.html', 'arrow-up.svg', 'navigate-before.svg', 'navigate-first.svg', 'navigate-last.svg', 'navigate-next.svg']);
+angular.module('md.table.templates', ['md-body.html', 'md-cell.html', 'md-column.html', 'md-head.html', 'md-row.html', 'md-table-filter-chips.html', 'md-table-filter-condition-panel.html', 'md-table-filter.html', 'md-table-pagination.html', 'md-table-progress.html', 'md-table.html', 'arrow-up.svg', 'navigate-before.svg', 'navigate-first.svg', 'navigate-last.svg', 'navigate-next.svg']);
 
 angular.module('md-body.html', []).run(['$templateCache', function($templateCache) {
   $templateCache.put('md-body.html',
@@ -18,9 +18,25 @@ angular.module('md-body.html', []).run(['$templateCache', function($templateCach
     '');
 }]);
 
+angular.module('md-cell.html', []).run(['$templateCache', function($templateCache) {
+  $templateCache.put('md-cell.html',
+    '<div style="max-width: {{col.width}}px;" class="md-cell">\n' +
+    '  <div ng-if="col.type == \'currency microusd\'">\n' +
+    '    {{getCurrency(row.branch[col.field])}}\n' +
+    '  </div>\n' +
+    '  <div ng-if="col.type == \'number\'">\n' +
+    '    {{row.branch[col.field]}}\n' +
+    '  </div>\n' +
+    '  <div ng-if="col.type == \'string\'">\n' +
+    '    {{row.branch[col.field]}}\n' +
+    '  </div>\n' +
+    '</div>\n' +
+    '');
+}]);
+
 angular.module('md-column.html', []).run(['$templateCache', function($templateCache) {
   $templateCache.put('md-column.html',
-    '<div class="md-column" ng-click=\'tableSort(col)\'>\n' +
+    '<div class="md-column" ng-click=\'tableSort(col)\' style="max-width: {{col.width}}px;">\n' +
     '  {{col.displayText}}\n' +
     '</div>\n' +
     '');
@@ -483,13 +499,33 @@ function mdCell() {
       select.addClass('md-table-select').attr('md-container-class', 'md-table-select');
     }
 
-    tElement.addClass('md-cell');
-
     return postLink;
   }
 
   // empty controller to be bind properties to in postLink function
-  function Controller() {
+  function Controller($scope) {
+
+    numeral.language('en', {
+        delimiters: {
+            thousands: ' ',
+            decimal: '.'
+        },
+        abbreviations: {
+            thousand: 'K',
+            million: 'M',
+            billion: 'B',
+            trillion: 'T'
+        },
+        currency: {
+            symbol: '$'
+        }
+    });
+
+
+    $scope.getCurrency = function(number) {
+      return numeral(number/1000000).format('$0.0a');
+    }
+
 
   }
 
@@ -539,8 +575,10 @@ function mdCell() {
   return {
     controller: Controller,
     compile: compile,
+    replace: true,
     require: ['mdCell', '^^mdTable'],
-    restrict: 'E'
+    restrict: 'E',
+    templateUrl: 'md-cell.html'
   };
 }
 

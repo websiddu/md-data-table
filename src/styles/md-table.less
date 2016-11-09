@@ -33,6 +33,7 @@ md-table-container {
   border-spacing: 0;
   overflow: hidden;
   display: table;
+  font-size: 12px;
 
   .md-head {
     .md-column {
@@ -106,7 +107,8 @@ md-table-container {
     color: @md-dark-secondary;
     font-size: 12px;
     font-weight: bold;
-    white-space: nowrap;
+    // white-space: nowrap;
+    line-height: 15px;
 
     &.md-sort {
       cursor: pointer;
@@ -177,26 +179,26 @@ md-table-container {
   &.md-row-select .md-column {
     &:first-child {
       width: 20px;
-      padding: 0 0 0 24px;
+      // padding: 0 0 0 24px;
     }
 
     &:nth-child(2) {
-      padding: 0 24px;
+      // padding: 0 24px;
     }
 
     &:nth-child(n+3):nth-last-child(n+2) {
-      padding: 0 56px 0 0;
+      // padding: 0 56px 0 0;
     }
   }
 
   &:not(.md-row-select) .md-cell,
   &:not(.md-row-select) .md-column {
     &:first-child {
-      padding: 0 24px;
+      // padding: 0 24px;
     }
 
     &:nth-child(n+2):nth-last-child(n+2) {
-      padding: 0 56px 0 0;
+      // padding: 0 56px 0 0;
     }
   }
 
@@ -233,10 +235,9 @@ md-table-container {
 
   .md-cell {
     color: @md-dark;
-    font-size: 13px;
     border-top: 1px @md-dark-divider solid;
 
-    &.md-numeric md-select {
+    &.md-number md-select {
       justify-content: flex-end;
 
       .md-select-value {
@@ -276,9 +277,17 @@ md-table-container {
   left     : 20px;
 }
 
+.tree-grid .tree-grid-row.level-2 .md-cell:nth-child(2){
+  padding-left: 16px;
+}
+
 .tree-grid .level-3 .indented {
   position : relative;
   left     : 40px;
+}
+
+.tree-grid .tree-grid-row.level-3 .md-cell:nth-child(2){
+  padding-left: 32px;
 }
 
 .tree-grid .level-4 .indented {
