@@ -1,4 +1,19 @@
-<div class="tree-grid md-table">
-  <md-head cols='$mdTable.tableData.cols'></md-head>
-  <md-body rows='$mdTable.tableData.rows' cols='$mdTable.tableData.cols'></md-body>
+<div>
+  <div class="tree-grid md-table">
+    <md-head cols='$mdTable.tableData.cols' ng-if="$mdTable.tableData.cols"></md-head>
+    <md-body rows='$mdTable.tableData.rows' cols='$mdTable.tableData.cols' ng-if="$mdTable.tableData.cols && $mdTable.tableData.rows.length > 0"></md-body>
+  </div>
+  <div class="md-table-empty" style="display: none;">
+    <svg width="57px" height="50px" viewBox="0 0 57 50" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+        <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+            <g id="table" transform="translate(1.000000, 1.000000)" stroke="#BDBDBD" stroke-width="2" fill="#FFFFFF">
+                <rect id="Rectangle" x="0" y="0" width="54.084507" height="8.11267606"></rect>
+                <rect id="Rectangle" x="0" y="14.1971831" width="13.5211268" height="33.8028169"></rect>
+                <rect id="Rectangle" x="20.2816901" y="14.1971831" width="13.5211268" height="33.8028169"></rect>
+                <rect id="Rectangle" x="40.5633803" y="14.1971831" width="13.5211268" height="33.8028169"></rect>
+            </g>
+        </g>
+    </svg>
+    <h3>No content available</h3>
+  </div>
 </div>

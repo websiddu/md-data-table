@@ -287,6 +287,23 @@ md-table-container {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
 }
+.md-table-empty {
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+  -ms-flex-align: center;
+      align-items: center;
+  -ms-flex-direction: column;
+      flex-direction: column;
+  padding: 40px 0;
+  border-top: solid 1px #eee;
+  display: none;
+}
+.md-table-empty h3 {
+  font-size: 15px;
+  color: #ccc;
+  font-weight: 300;
+}
 .md-table {
   width: 100%;
   border-spacing: 0;
@@ -296,6 +313,7 @@ md-table-container {
 }
 .md-table .md-head .md-column {
   display: table-cell;
+  padding: 8px;
 }
 .md-table .md-body,
 .md-table .md-head {
@@ -306,6 +324,7 @@ md-table-container {
 }
 .md-table .md-cell {
   display: table-cell;
+  padding: 0 8px;
 }
 .md-table .md-column {
   font-weight: bold;
@@ -423,8 +442,12 @@ md-table-container {
 .md-table .md-column.md-clickable:focus {
   outline: none;
 }
-.md-table .md-cell.md-numeric,
-.md-table .md-column.md-numeric {
+.md-table .md-cell.number,
+.md-table .md-column.number {
+  text-align: right;
+}
+.md-table .md-cell.currency,
+.md-table .md-column.currency {
   text-align: right;
 }
 .md-table .md-cell md-checkbox,

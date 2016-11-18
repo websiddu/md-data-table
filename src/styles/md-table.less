@@ -28,6 +28,22 @@ md-table-container {
   -webkit-overflow-scrolling: touch;
 }
 
+.md-table-empty {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  flex-direction: column;
+  padding: 40px 0;
+  border-top: solid 1px #eee;
+  display: none;
+
+  h3 {
+    font-size: 15px;
+    color: #ccc;
+    font-weight: 300;
+  }
+}
+
 .md-table {
   width: 100%;
   border-spacing: 0;
@@ -38,6 +54,7 @@ md-table-container {
   .md-head {
     .md-column {
       display: table-cell;
+      padding: 8px;
     }
   }
 
@@ -52,6 +69,7 @@ md-table-container {
 
   .md-cell {
     display: table-cell;
+    padding: 0 8px;
   }
 
   .md-column {
@@ -223,7 +241,11 @@ md-table-container {
       }
     }
 
-    &.md-numeric {
+    &.number {
+      text-align: right;
+    }
+
+    &.currency {
       text-align: right;
     }
 

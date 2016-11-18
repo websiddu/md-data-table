@@ -16,9 +16,9 @@ function mdBody() {
 
     var expand_level = parseInt($attrs.expandLevel, 10);
 
-    var for_each_branch = function(f) {
+    var for_each_branch = function (f) {
       var do_f, root_branch, _i, _len, _ref, _results;
-      do_f = function(branch, level) {
+      do_f = function (branch, level) {
         var child, _i, _len, _ref, _results;
         f(branch, level);
         if (branch.children != null) {
@@ -43,7 +43,7 @@ function mdBody() {
 
     var selected_branch = null;
 
-    var select_branch = function(branch) {
+    var select_branch = function (branch) {
       if (!branch) {
         if (selected_branch != null) {
           selected_branch.selected = false;
@@ -59,12 +59,12 @@ function mdBody() {
         selected_branch = branch;
         expand_all_parents(branch);
         if (branch.onSelect != null) {
-          return $timeout(function() {
+          return $timeout(function () {
             return branch.onSelect(branch);
           });
         } else {
           if (scope.onSelect != null) {
-            return $timeout(function() {
+            return $timeout(function () {
               return scope.onSelect({
                 branch: branch
               });
@@ -74,8 +74,8 @@ function mdBody() {
       }
     };
 
-    $scope.on_user_click = function(branch) {
-      console.log(branch)
+    $scope.on_user_click = function (branch) {
+
       if (scope.onClick) {
         scope.onClick({
           branch: branch
@@ -83,7 +83,7 @@ function mdBody() {
       }
     };
 
-    $scope.user_clicks_branch = function(branch) {
+    $scope.user_clicks_branch = function (branch) {
       if (branch !== selected_branch) {
         return select_branch(branch);
       }
@@ -91,11 +91,11 @@ function mdBody() {
 
 
 
-    var get_parent = function(child) {
+    var get_parent = function (child) {
       var parent;
       parent = void 0;
       if (child.parent_uid) {
-        for_each_branch(function(b) {
+        for_each_branch(function (b) {
           if (b.uid === child.parent_uid) {
             return parent = b;
           }
@@ -104,7 +104,7 @@ function mdBody() {
       return parent;
     };
 
-    var for_all_ancestors = function(child, fn) {
+    var for_all_ancestors = function (child, fn) {
       var parent;
       parent = get_parent(child);
       if (parent != null) {
@@ -112,8 +112,8 @@ function mdBody() {
         return for_all_ancestors(parent, fn);
       }
     };
-    var expand_all_parents = function(child) {
-      return for_all_ancestors(child, function(b) {
+    var expand_all_parents = function (child) {
+      return for_all_ancestors(child, function (b) {
         return b.expanded = true;
       });
     };
@@ -123,16 +123,16 @@ function mdBody() {
     $scope.tree_rows = [];
 
 
-    var on_treeData_change = function() {
+    var on_treeData_change = function () {
       var add_branch_to_list, root_branch, _i, _len, _ref, _results;
 
-      for_each_branch(function(b, level) {
+      for_each_branch(function (b, level) {
         if (!b.uid) {
           return b.uid = "" + Math.random();
         }
       });
 
-      for_each_branch(function(b) {
+      for_each_branch(function (b) {
         var child, _i, _len, _ref, _results;
         if (angular.isArray(b.children)) {
           _ref = b.children;
@@ -145,11 +145,12 @@ function mdBody() {
         }
       });
       $scope.tree_rows = [];
-      for_each_branch(function(branch) {
+
+      for_each_branch(function (branch) {
         var child, f;
         if (branch.children) {
           if (branch.children.length > 0) {
-            f = function(e) {
+            f = function (e) {
               if (typeof e === 'string') {
                 return {
                   label: e,
@@ -159,7 +160,7 @@ function mdBody() {
                 return e;
               }
             };
-            return branch.children = (function() {
+            return branch.children = (function () {
               var _i, _len, _ref, _results;
               _ref = branch.children;
               _results = [];
@@ -175,7 +176,7 @@ function mdBody() {
         }
       });
 
-      var add_branch_to_list = function(level, branch, visible) {
+      var add_branch_to_list = function (level, branch, visible) {
         var child, child_visible, tree_icon, _i, _len, _ref, _results;
         if (branch.expanded == null) {
           branch.expanded = false;
@@ -210,6 +211,7 @@ function mdBody() {
     };
 
     $scope.$watch('rows', on_treeData_change, true);
+
 
 
 

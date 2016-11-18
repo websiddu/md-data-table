@@ -20,7 +20,7 @@ angular.module('md-body.html', []).run(['$templateCache', function($templateCach
 
 angular.module('md-cell.html', []).run(['$templateCache', function($templateCache) {
   $templateCache.put('md-cell.html',
-    '<div style="max-width: {{col.width}}px;" class="md-cell">\n' +
+    '<div style="max-width: {{col.width}}px;" class="md-cell {{col.type}}">\n' +
     '  <div ng-if="col.type == \'currency microusd\'">\n' +
     '    {{getCurrency(row.branch[col.field])}}\n' +
     '  </div>\n' +
@@ -33,13 +33,20 @@ angular.module('md-cell.html', []).run(['$templateCache', function($templateCach
     '  <div ng-if="col.type == \'string\'">\n' +
     '    {{row.branch[col.field]}}\n' +
     '  </div>\n' +
+    '  <div ng-if="col.type == \'string link\'">\n' +
+    '    <a ng-href="#/{{col.table}}/{{row.branch.id}}">{{row.branch[col.field]}}</a>\n' +
+    '  </div>\n' +
+    '  <div ng-if="col.type == \'switch\'">\n' +
+    '    {{col.options.join(\', \')}}\n' +
+    '  </div>\n' +
+    '\n' +
     '</div>\n' +
     '');
 }]);
 
 angular.module('md-column.html', []).run(['$templateCache', function($templateCache) {
   $templateCache.put('md-column.html',
-    '<div class="md-column" ng-click=\'tableSort(col)\' style="max-width: {{col.width}}px;">\n' +
+    '<div class="md-column {{col.type}}" ng-click=\'tableSort(col)\' style="max-width: {{col.width}}px;">\n' +
     '  {{col.displayText}}\n' +
     '</div>\n' +
     '');
@@ -224,9 +231,24 @@ angular.module('md-table-progress.html', []).run(['$templateCache', function($te
 
 angular.module('md-table.html', []).run(['$templateCache', function($templateCache) {
   $templateCache.put('md-table.html',
-    '<div class="tree-grid md-table">\n' +
-    '  <md-head cols=\'$mdTable.tableData.cols\'></md-head>\n' +
-    '  <md-body rows=\'$mdTable.tableData.rows\' cols=\'$mdTable.tableData.cols\'></md-body>\n' +
+    '<div>\n' +
+    '  <div class="tree-grid md-table">\n' +
+    '    <md-head cols=\'$mdTable.tableData.cols\' ng-if="$mdTable.tableData.cols"></md-head>\n' +
+    '    <md-body rows=\'$mdTable.tableData.rows\' cols=\'$mdTable.tableData.cols\' ng-if="$mdTable.tableData.cols && $mdTable.tableData.rows.length > 0"></md-body>\n' +
+    '  </div>\n' +
+    '  <div class="md-table-empty" style="display: none;">\n' +
+    '    <svg width="57px" height="50px" viewBox="0 0 57 50" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">\n' +
+    '        <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\n' +
+    '            <g id="table" transform="translate(1.000000, 1.000000)" stroke="#BDBDBD" stroke-width="2" fill="#FFFFFF">\n' +
+    '                <rect id="Rectangle" x="0" y="0" width="54.084507" height="8.11267606"></rect>\n' +
+    '                <rect id="Rectangle" x="0" y="14.1971831" width="13.5211268" height="33.8028169"></rect>\n' +
+    '                <rect id="Rectangle" x="20.2816901" y="14.1971831" width="13.5211268" height="33.8028169"></rect>\n' +
+    '                <rect id="Rectangle" x="40.5633803" y="14.1971831" width="13.5211268" height="33.8028169"></rect>\n' +
+    '            </g>\n' +
+    '        </g>\n' +
+    '    </svg>\n' +
+    '    <h3>No content available</h3>\n' +
+    '  </div>\n' +
     '</div>\n' +
     '');
 }]);
@@ -275,9 +297,9 @@ function mdBody() {
 
     var expand_level = parseInt($attrs.expandLevel, 10);
 
-    var for_each_branch = function(f) {
+    var for_each_branch = function (f) {
       var do_f, root_branch, _i, _len, _ref, _results;
-      do_f = function(branch, level) {
+      do_f = function (branch, level) {
         var child, _i, _len, _ref, _results;
         f(branch, level);
         if (branch.children != null) {
@@ -302,7 +324,7 @@ function mdBody() {
 
     var selected_branch = null;
 
-    var select_branch = function(branch) {
+    var select_branch = function (branch) {
       if (!branch) {
         if (selected_branch != null) {
           selected_branch.selected = false;
@@ -318,12 +340,12 @@ function mdBody() {
         selected_branch = branch;
         expand_all_parents(branch);
         if (branch.onSelect != null) {
-          return $timeout(function() {
+          return $timeout(function () {
             return branch.onSelect(branch);
           });
         } else {
           if (scope.onSelect != null) {
-            return $timeout(function() {
+            return $timeout(function () {
               return scope.onSelect({
                 branch: branch
               });
@@ -333,8 +355,8 @@ function mdBody() {
       }
     };
 
-    $scope.on_user_click = function(branch) {
-      console.log(branch)
+    $scope.on_user_click = function (branch) {
+
       if (scope.onClick) {
         scope.onClick({
           branch: branch
@@ -342,7 +364,7 @@ function mdBody() {
       }
     };
 
-    $scope.user_clicks_branch = function(branch) {
+    $scope.user_clicks_branch = function (branch) {
       if (branch !== selected_branch) {
         return select_branch(branch);
       }
@@ -350,11 +372,11 @@ function mdBody() {
 
 
 
-    var get_parent = function(child) {
+    var get_parent = function (child) {
       var parent;
       parent = void 0;
       if (child.parent_uid) {
-        for_each_branch(function(b) {
+        for_each_branch(function (b) {
           if (b.uid === child.parent_uid) {
             return parent = b;
           }
@@ -363,7 +385,7 @@ function mdBody() {
       return parent;
     };
 
-    var for_all_ancestors = function(child, fn) {
+    var for_all_ancestors = function (child, fn) {
       var parent;
       parent = get_parent(child);
       if (parent != null) {
@@ -371,8 +393,8 @@ function mdBody() {
         return for_all_ancestors(parent, fn);
       }
     };
-    var expand_all_parents = function(child) {
-      return for_all_ancestors(child, function(b) {
+    var expand_all_parents = function (child) {
+      return for_all_ancestors(child, function (b) {
         return b.expanded = true;
       });
     };
@@ -382,16 +404,16 @@ function mdBody() {
     $scope.tree_rows = [];
 
 
-    var on_treeData_change = function() {
+    var on_treeData_change = function () {
       var add_branch_to_list, root_branch, _i, _len, _ref, _results;
 
-      for_each_branch(function(b, level) {
+      for_each_branch(function (b, level) {
         if (!b.uid) {
           return b.uid = "" + Math.random();
         }
       });
 
-      for_each_branch(function(b) {
+      for_each_branch(function (b) {
         var child, _i, _len, _ref, _results;
         if (angular.isArray(b.children)) {
           _ref = b.children;
@@ -404,11 +426,12 @@ function mdBody() {
         }
       });
       $scope.tree_rows = [];
-      for_each_branch(function(branch) {
+
+      for_each_branch(function (branch) {
         var child, f;
         if (branch.children) {
           if (branch.children.length > 0) {
-            f = function(e) {
+            f = function (e) {
               if (typeof e === 'string') {
                 return {
                   label: e,
@@ -418,7 +441,7 @@ function mdBody() {
                 return e;
               }
             };
-            return branch.children = (function() {
+            return branch.children = (function () {
               var _i, _len, _ref, _results;
               _ref = branch.children;
               _results = [];
@@ -434,7 +457,7 @@ function mdBody() {
         }
       });
 
-      var add_branch_to_list = function(level, branch, visible) {
+      var add_branch_to_list = function (level, branch, visible) {
         var child, child_visible, tree_icon, _i, _len, _ref, _results;
         if (branch.expanded == null) {
           branch.expanded = false;
@@ -469,6 +492,7 @@ function mdBody() {
     };
 
     $scope.$watch('rows', on_treeData_change, true);
+
 
 
 
@@ -597,99 +621,101 @@ angular.module('md.data.table').directive('mdColumn', mdColumn);
 
 function mdColumn($compile, $mdUtil) {
 
-    function compile(tElement) {
-        tElement.addClass('md-column');
-    }
+  function compile(tElement) {
+    tElement.addClass('md-column');
+  }
 
-    function Link(scope, element, attrs, ctrl) {
+  function Link(scope, element, attrs, ctrl) {
+    if (ctrl[1].tableData) {
       scope.tableData = ctrl[1].tableData;
       scope.cols = ctrl[1].tableData.cols;
     }
+  }
 
 
 
-    function Controller($scope) {
+  function Controller($scope) {
 
-        $scope.tableSort = function(col) {
-            if (col.sortDirection === "asc") {
-                sort_recursive($scope.tableData.rows, col, true);
-                col.sortDirection = "desc";
-            } else {
-                sort_recursive($scope.tableData.rows, col, false);
-                col.sortDirection = "asc";
-            }
-            col.sorted = true;
-            resetSorting(col);
+    $scope.tableSort = function (col) {
+      if (col.sortDirection === "asc") {
+        sort_recursive($scope.tableData.rows, col, true);
+        col.sortDirection = "desc";
+      } else {
+        sort_recursive($scope.tableData.rows, col, false);
+        col.sortDirection = "asc";
+      }
+      col.sorted = true;
+      resetSorting(col);
+    };
+
+    var sort_recursive = function (elements, col, descending) {
+      elements.sort(sort_by(col, descending));
+      for (var i = 0; i < elements.length; i++) {
+        sort_recursive(elements[i].children, col, descending);
+      }
+    };
+
+    var sort_by = function (col, descending) {
+
+      var direction = !descending ? 1 : -1;
+
+      if (col.sortingType === "custom" && typeof col.sortingFunc === "function") {
+        return function (a, b) {
+          return col.sortingFunc(a, b) * direction;
         };
+      }
 
-        var sort_recursive = function(elements, col, descending) {
-            elements.sort(sort_by(col, descending));
-            for (var i = 0; i < elements.length; i++) {
-                sort_recursive(elements[i].children, col, descending);
-            }
-        };
+      var key = function (x) {
+        return (x[col.field] === null ? "" : x[col.field].toLowerCase());
+      };
 
-        var sort_by = function(col, descending) {
+      switch (col.sortingType) {
+        case "number":
+          key = function (x) {
+            return parseFloat(x[col.field]);
+          };
+          break;
+        case "date":
+          key = function (x) {
+            return new Date(x[col.field]);
+          };
+          break;
+      }
 
-            var direction = !descending ? 1 : -1;
-
-            if (col.sortingType === "custom" && typeof col.sortingFunc === "function") {
-                return function(a, b) {
-                    return col.sortingFunc(a, b) * direction;
-                };
-            }
-
-            var key = function(x) {
-                return (x[col.field] === null ? "" : x[col.field].toLowerCase());
-            };
-
-            switch (col.sortingType) {
-                case "number":
-                    key = function(x) {
-                        return parseFloat(x[col.field]);
-                    };
-                    break;
-                case "date":
-                    key = function(x) {
-                        return new Date(x[col.field]);
-                    };
-                    break;
-            }
-
-            return function(a, b) {
-                return a = key(a), b = key(b), direction * ((a > b) - (b > a));
-            };
-        }
-
-        var resetSorting = function(sortedCol) {
-            var arraySize = $scope.cols.length;
-            for (var i = 0; i < arraySize; i++) {
-                var col = $scope.cols[i];
-                if (col.field != sortedCol.field) {
-                    col.sorted = false;
-                    col.sortDirection = "none";
-                }
-            }
-        }
-
+      return function (a, b) {
+        return a = key(a), b = key(b), direction * ((a > b) - (b > a));
+      };
     }
 
-    Controller.$inject = ['$scope']
-
-    return {
-        // compile: compile,
-        require: ['^^mdHead', '^^mdTable'],
-        restrict: 'E',
-        replace: true,
-        controller: Controller,
-        link: Link,
-        templateUrl: 'md-column.html',
-        scope: {
-            numeric: '=?mdNumeric',
-            orderBy: '@?mdOrderBy',
-            col: '=?'
+    var resetSorting = function (sortedCol) {
+      var arraySize = $scope.cols.length;
+      for (var i = 0; i < arraySize; i++) {
+        var col = $scope.cols[i];
+        if (col.field != sortedCol.field) {
+          col.sorted = false;
+          col.sortDirection = "none";
         }
-    };
+      }
+    }
+
+  }
+
+  Controller.$inject = ['$scope']
+
+  return {
+    // compile: compile,
+    require: ['^^mdHead', '^^mdTable'],
+    restrict: 'E',
+    replace: true,
+    controller: Controller,
+    link: Link,
+    templateUrl: 'md-column.html',
+    scope: {
+      numeric: '=?mdNumeric',
+      orderBy: '@?mdOrderBy',
+      col: '=?'
+    }
+  };
 }
 
 mdColumn.$inject = ['$compile', '$mdUtil'];
