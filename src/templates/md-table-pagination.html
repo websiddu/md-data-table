@@ -1,9 +1,11 @@
-<div class="page-select" ng-if="$pagination.showPageSelect()">
-  <div class="label">{{$pagination.label.page}}</div>
+<div class="page-select" ng-iif="$pagination.showPageSelect()">
+  <!--<div class="label">{{$pagination.label.page}}</div>-->
 
-  <md-select virtual-page-select total="{{$pagination.pages()}}" class="md-table-select" ng-model="$pagination.page" md-container-class="md-pagination-select" ng-change="$pagination.onPaginationChange()" ng-disabled="$pagination.disabled" aria-label="Page">
+  <div class="label">Rows per page: </div>
+
+  <md-select virtual-page-select total="{{$pagination.pages()}}" class="md-table-select" ng-model="50" md-container-class="md-pagination-select" ng-change="$pagination.onPaginationChange()" ng-disabled="$pagination.disabled" aria-label="Page" style="width: 20px">
     <md-content>
-      <md-option ng-repeat="page in $pageSelect.pages" ng-value="page">{{page}}</md-option>
+      <md-option ng-repeat="page in [10, 20, 50, 100, 200, 500]" ng-value="page">{{page}}</md-option>
     </md-content>
   </md-select>
 </div>
@@ -17,7 +19,8 @@
 </div>
 
 <div class="buttons">
-  <div class="label">{{$pagination.min()}} - {{$pagination.max()}} {{$pagination.label.of}} {{$pagination.total}}</div>
+  <!--<div class="label">{{$pagination.min()}} - {{$pagination.max()}} {{$pagination.label.of}} {{$pagination.total}}</div>-->
+  <div class="label"> 1 - 20 of 93</div>
 
   <md-button class="md-icon-button" type="button" ng-if="$pagination.showBoundaryLinks()" ng-click="$pagination.first()" ng-disabled="$pagination.disabled || !$pagination.hasPrevious()" aria-label="First">
     <md-icon md-svg-icon="navigate-first.svg"></md-icon>

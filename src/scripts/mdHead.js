@@ -91,6 +91,10 @@ function mdHead($compile) {
       });
     };
 
+    scope.checkBoxCol = {
+      type: 'checkbox'
+    }
+
     scope.$watchGroup([enableRowSelection, tableCtrl.enableMultiSelect], function (newValue) {
       if(newValue[0] !== oldValue[0]) {
         if(newValue[0]) {
@@ -126,7 +130,8 @@ function mdHead($compile) {
     scope: {
       order: '=?mdOrder',
       onReorder: '=?mdOnReorder',
-      cols: '=?'
+      cols: '=?',
+      options: '=?'
     }
   };
 }

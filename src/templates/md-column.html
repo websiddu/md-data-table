@@ -1,3 +1,8 @@
-<div class="md-column {{col.type}}" ng-click='tableSort(col)' style="max-width: {{col.width}}px;">
-  {{col.displayText}}
+<div ng-switch on="col.type" class="md-column {{col.type}}" style="max-width: {{col.width}}px;">
+  <div ng-switch-when="checkbox" style="text-align: center;"><md-checkbox></md-checkbox></div>
+  <div ng-switch-default>
+    <div ng-click='tableSort(col)'>
+      {{col.displayText}}
+    </div>
+  </div>
 </div>

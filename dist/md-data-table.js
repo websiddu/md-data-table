@@ -12,7 +12,7 @@ angular.module('md.table.templates', ['md-body.html', 'md-cell.html', 'md-column
 angular.module('md-body.html', []).run(['$templateCache', function($templateCache) {
   $templateCache.put('md-body.html',
     '<div class="md-body">\n' +
-    '    <md-row ng-repeat=\'row in tree_rows | searchFor:$parent.filterString:expandingProperty:cols track by row.branch.uid\' row=\'row\' cols=\'cols\' ng-class="\'level-\' + {{ row.level }} + (row.branch.selected ? \' active\':\'\')" class="tree-grid-row md-row"\n' +
+    '    <md-row options="options" ng-repeat=\'row in tree_rows | searchFor:$parent.filterString:expandingProperty:cols track by row.branch.uid\' row=\'row\' cols=\'cols\' ng-class="\'level-\' + {{ row.level }} + (row.branch.selected ? \' active\':\'\')" class="tree-grid-row md-row"\n' +
     '    ></md-row>\n' +
     '  </div>\n' +
     '');
@@ -21,33 +21,47 @@ angular.module('md-body.html', []).run(['$templateCache', function($templateCach
 angular.module('md-cell.html', []).run(['$templateCache', function($templateCache) {
   $templateCache.put('md-cell.html',
     '<div style="max-width: {{col.width}}px;" class="md-cell {{col.type}}">\n' +
-    '  <div ng-if="col.type == \'currency microusd\'">\n' +
-    '    {{getCurrency(row.branch[col.field])}}\n' +
+    '  <div ng-switch on="col.type">\n' +
+    '    <div ng-switch-when="currency microusd">\n' +
+    '      {{getCurrency(row.branch[col.field])}}\n' +
+    '    </div>\n' +
+    '    <div ng-switch-when="date">\n' +
+    '      {{getDate(pluck(row.branch, col.field))}}\n' +
+    '    </div>\n' +
+    '    <div ng-switch-when="date micro">\n' +
+    '      {{getDate(pluck(row.branch, col.field), true)}}\n' +
+    '    </div>\n' +
+    '    <div ng-switch-when="number">\n' +
+    '      {{pluck(row.branch, col.field)}}\n' +
+    '    </div>\n' +
+    '    <div ng-switch-when="string">\n' +
+    '      {{pluck(row.branch, col.field)}}\n' +
+    '    </div>\n' +
+    '    <div ng-switch-when="string link">\n' +
+    '      <a ng-href="#/{{col.table}}/{{row.branch.id}}">{{pluck(row.branch, col.field)}}</a>\n' +
+    '    </div>\n' +
+    '    <div ng-switch-when="string dropdown">\n' +
+    '      <md-select ng-model="row.branch[col.field]">\n' +
+    '        <md-option ng-value="opt" ng-repeat="opt in col.enum.split(\':\')">{{opt}}</md-option>\n' +
+    '      </md-select>\n' +
+    '    </div>\n' +
     '  </div>\n' +
-    '  <div ng-if="col.type == \'date\'">\n' +
-    '    {{getDate(row.branch[col.field])}}\n' +
-    '  </div>\n' +
-    '  <div ng-if="col.type == \'number\'">\n' +
-    '    {{row.branch[col.field]}}\n' +
-    '  </div>\n' +
-    '  <div ng-if="col.type == \'string\'">\n' +
-    '    {{row.branch[col.field]}}\n' +
-    '  </div>\n' +
-    '  <div ng-if="col.type == \'string link\'">\n' +
-    '    <a ng-href="#/{{col.table}}/{{row.branch.id}}">{{row.branch[col.field]}}</a>\n' +
-    '  </div>\n' +
-    '  <div ng-if="col.type == \'switch\'">\n' +
+    '  <!--<div ng-if="col.type == \'switch\'">\n' +
     '    {{col.options.join(\', \')}}\n' +
-    '  </div>\n' +
-    '\n' +
+    '  </div>-->\n' +
     '</div>\n' +
     '');
 }]);
 
 angular.module('md-column.html', []).run(['$templateCache', function($templateCache) {
   $templateCache.put('md-column.html',
-    '<div class="md-column {{col.type}}" ng-click=\'tableSort(col)\' style="max-width: {{col.width}}px;">\n' +
-    '  {{col.displayText}}\n' +
+    '<div ng-switch on="col.type" class="md-column {{col.type}}" style="max-width: {{col.width}}px;">\n' +
+    '  <div ng-switch-when="checkbox" style="text-align: center;"><md-checkbox></md-checkbox></div>\n' +
+    '  <div ng-switch-default>\n' +
+    '    <div ng-click=\'tableSort(col)\'>\n' +
+    '      {{col.displayText}}\n' +
+    '    </div>\n' +
+    '  </div>\n' +
     '</div>\n' +
     '');
 }]);
@@ -56,7 +70,8 @@ angular.module('md-head.html', []).run(['$templateCache', function($templateCach
   $templateCache.put('md-head.html',
     '<div class="md-head">\n' +
     '    <div class="md-row">\n' +
-    '      <md-column>&nbsp;</md-column>\n' +
+    '      <md-column ng-if="$mdHead.options.selection" col=\'checkBoxCol\'></md-column>\n' +
+    '      <md-column ng-if="$mdHead.options.expand">&nbsp;</md-column>\n' +
     '      <md-column ng-repeat="col in $mdHead.cols" col=\'col\' md:order:by="name">\n' +
     '      </md-column>\n' +
     '    </div>\n' +
@@ -66,8 +81,11 @@ angular.module('md-head.html', []).run(['$templateCache', function($templateCach
 
 angular.module('md-row.html', []).run(['$templateCache', function($templateCache) {
   $templateCache.put('md-row.html',
-    '<div class="md-row">\n' +
-    '  <div class="md-cell" style="width: 48px;">\n' +
+    '<div class="md-row" ng-click="openPanel(cols)">\n' +
+    '  <div class="md-cell" style="width: 48px; text-align: center;" ng-if="options.selection">\n' +
+    '    <md-checkbox></md-checkbox>\n' +
+    '  </div>\n' +
+    '  <div class="md-cell" style="width: 48px; text-align: center;" ng-if="options.expand">\n' +
     '    <md-button class="indented md-icon-button" ng-click="user_clicks_branch(row.branch)" ng-if="row.branch.children.length > 0">\n' +
     '      <i ng-class="row.tree_icon" ng-click="row.branch.expanded = !row.branch.expanded" class="material-icons">\n' +
     '        {{row.branch.expanded ? \'expand_more\' : \'expand_less\'}}\n' +
@@ -149,7 +167,8 @@ angular.module('md-table-filter.html', []).run(['$templateCache', function($temp
     '        </md-select>\n' +
     '      </div>\n' +
     '      <div class="filterset">\n' +
-    '        <md-input-container>\n' +
+    '        <span>Quarter </span>\n' +
+    '        <md-input-container flex>\n' +
     '          <md-select ng-model="filter.filterset.quarter">\n' +
     '            <md-option ng-value="0" selected>Q4 2016</md-option>\n' +
     '            <md-option ng-value="1">Q3 2016</md-option>\n' +
@@ -157,7 +176,8 @@ angular.module('md-table-filter.html', []).run(['$templateCache', function($temp
     '        </md-input-container>\n' +
     '      </div>\n' +
     '      <div class="filterset">\n' +
-    '        <md-input-container>\n' +
+    '        <span>Companies </span>\n' +
+    '        <md-input-container flex>\n' +
     '          <md-select ng-model="filter.filterset.companies">\n' +
     '            <md-option ng-value="0" selected>Current</md-option>\n' +
     '            <md-option ng-value="1">Future</md-option>\n' +
@@ -172,7 +192,6 @@ angular.module('md-table-filter.html', []).run(['$templateCache', function($temp
     '      <div class="chipscontainer">\n' +
     '        <md-table-filter-chips filters="filters"></md-table-filter-chips>\n' +
     '      </div>\n' +
-    '\n' +
     '    </div>\n' +
     '  </div>\n' +
     '</md-card>\n' +
@@ -181,12 +200,14 @@ angular.module('md-table-filter.html', []).run(['$templateCache', function($temp
 
 angular.module('md-table-pagination.html', []).run(['$templateCache', function($templateCache) {
   $templateCache.put('md-table-pagination.html',
-    '<div class="page-select" ng-if="$pagination.showPageSelect()">\n' +
-    '  <div class="label">{{$pagination.label.page}}</div>\n' +
+    '<div class="page-select" ng-iif="$pagination.showPageSelect()">\n' +
+    '  <!--<div class="label">{{$pagination.label.page}}</div>-->\n' +
     '\n' +
-    '  <md-select virtual-page-select total="{{$pagination.pages()}}" class="md-table-select" ng-model="$pagination.page" md-container-class="md-pagination-select" ng-change="$pagination.onPaginationChange()" ng-disabled="$pagination.disabled" aria-label="Page">\n' +
+    '  <div class="label">Rows per page: </div>\n' +
+    '\n' +
+    '  <md-select virtual-page-select total="{{$pagination.pages()}}" class="md-table-select" ng-model="50" md-container-class="md-pagination-select" ng-change="$pagination.onPaginationChange()" ng-disabled="$pagination.disabled" aria-label="Page" style="width: 20px">\n' +
     '    <md-content>\n' +
-    '      <md-option ng-repeat="page in $pageSelect.pages" ng-value="page">{{page}}</md-option>\n' +
+    '      <md-option ng-repeat="page in [10, 20, 50, 100, 200, 500]" ng-value="page">{{page}}</md-option>\n' +
     '    </md-content>\n' +
     '  </md-select>\n' +
     '</div>\n' +
@@ -200,7 +221,8 @@ angular.module('md-table-pagination.html', []).run(['$templateCache', function($
     '</div>\n' +
     '\n' +
     '<div class="buttons">\n' +
-    '  <div class="label">{{$pagination.min()}} - {{$pagination.max()}} {{$pagination.label.of}} {{$pagination.total}}</div>\n' +
+    '  <!--<div class="label">{{$pagination.min()}} - {{$pagination.max()}} {{$pagination.label.of}} {{$pagination.total}}</div>-->\n' +
+    '  <div class="label"> 1 - 20 of 93</div>\n' +
     '\n' +
     '  <md-button class="md-icon-button" type="button" ng-if="$pagination.showBoundaryLinks()" ng-click="$pagination.first()" ng-disabled="$pagination.disabled || !$pagination.hasPrevious()" aria-label="First">\n' +
     '    <md-icon md-svg-icon="navigate-first.svg"></md-icon>\n' +
@@ -217,37 +239,42 @@ angular.module('md-table-pagination.html', []).run(['$templateCache', function($
     '  <md-button class="md-icon-button" type="button" ng-if="$pagination.showBoundaryLinks()" ng-click="$pagination.last()" ng-disabled="$pagination.disabled || !$pagination.hasNext()" aria-label="Last">\n' +
     '    <md-icon md-svg-icon="navigate-last.svg"></md-icon>\n' +
     '  </md-button>\n' +
-    '</div>');
+    '</div>\n' +
+    '');
 }]);
 
 angular.module('md-table-progress.html', []).run(['$templateCache', function($templateCache) {
   $templateCache.put('md-table-progress.html',
-    '<tr>\n' +
-    '  <th colspan="{{columnCount()}}">\n' +
-    '    <md-progress-linear ng-show="deferred()" md-mode="indeterminate"></md-progress-linear>\n' +
-    '  </th>\n' +
-    '</tr>');
+    '<div>\n' +
+    '  <md-progress-linear ng-show="deferred()" md-mode="indeterminate"></md-progress-linear>\n' +
+    '</div>\n' +
+    '');
 }]);
 
 angular.module('md-table.html', []).run(['$templateCache', function($templateCache) {
   $templateCache.put('md-table.html',
     '<div>\n' +
     '  <div class="tree-grid md-table">\n' +
-    '    <md-head cols=\'$mdTable.tableData.cols\' ng-if="$mdTable.tableData.cols"></md-head>\n' +
-    '    <md-body rows=\'$mdTable.tableData.rows\' cols=\'$mdTable.tableData.cols\' ng-if="$mdTable.tableData.cols && $mdTable.tableData.rows.length > 0"></md-body>\n' +
+    '    <md-head cols=\'$mdTable.tableData.cols\' options="$mdTable.tableOptions" ng-if="$mdTable.tableData.cols"></md-head>\n' +
+    '    <div class="md-table-progress"></div>\n' +
+    '    <md-body rows=\'$mdTable.tableData.rows\' cols=\'$mdTable.tableData.cols\' ng-if="$mdTable.tableData.cols && $mdTable.tableData.rows.length > 0" options="$mdTable.tableOptions"></md-body>\n' +
     '  </div>\n' +
-    '  <div class="md-table-empty" style="display: none;">\n' +
-    '    <svg width="57px" height="50px" viewBox="0 0 57 50" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">\n' +
-    '        <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\n' +
-    '            <g id="table" transform="translate(1.000000, 1.000000)" stroke="#BDBDBD" stroke-width="2" fill="#FFFFFF">\n' +
-    '                <rect id="Rectangle" x="0" y="0" width="54.084507" height="8.11267606"></rect>\n' +
-    '                <rect id="Rectangle" x="0" y="14.1971831" width="13.5211268" height="33.8028169"></rect>\n' +
-    '                <rect id="Rectangle" x="20.2816901" y="14.1971831" width="13.5211268" height="33.8028169"></rect>\n' +
-    '                <rect id="Rectangle" x="40.5633803" y="14.1971831" width="13.5211268" height="33.8028169"></rect>\n' +
+    '  <md-table-pagination></md-table-pagination>\n' +
+    '  <div class="md-table-empty none" ng-if="$mdTable.tableData.rows.length == 0">\n' +
+    '<!--<svg width="60px" height="60px" viewBox="0 0 100 100" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">\n' +
+    '    <title>icon</title>\n' +
+    '    <desc>Created with Sketch.</desc>\n' +
+    '    <defs></defs>\n' +
+    '    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\n' +
+    '        <g id="icon">\n' +
+    '            <circle id="Oval" fill-opacity="0.36" fill="#000000" cx="50" cy="50" r="50"></circle>\n' +
+    '            <g id="ic_local_offer_black_24dp" transform="translate(30.000000, 30.000000)" fill="#FFFFFF">\n' +
+    '                <path d="M38.0358333,19.195 L20.7858333,1.945 C20.0958333,1.255 19.1375,0.833333333 18.0833333,0.833333333 L4.66666667,0.833333333 C2.55833333,0.833333333 0.833333333,2.55833333 0.833333333,4.66666667 L0.833333333,18.0833333 C0.833333333,19.1375 1.255,20.0958333 1.96416667,20.805 L19.2141667,38.055 C19.9041667,38.745 20.8625,39.1666667 21.9166667,39.1666667 C22.9708333,39.1666667 23.9291667,38.745 24.6191667,38.0358333 L38.0358333,24.6191667 C38.745,23.9291667 39.1666667,22.9708333 39.1666667,21.9166667 C39.1666667,20.8625 38.7258333,19.885 38.0358333,19.195 Z M7.54166667,10.4166667 C5.95083333,10.4166667 4.66666667,9.1325 4.66666667,7.54166667 C4.66666667,5.95083333 5.95083333,4.66666667 7.54166667,4.66666667 C9.1325,4.66666667 10.4166667,5.95083333 10.4166667,7.54166667 C10.4166667,9.1325 9.1325,10.4166667 7.54166667,10.4166667 Z" id="Shape"></path>\n' +
     '            </g>\n' +
     '        </g>\n' +
-    '    </svg>\n' +
-    '    <h3>No content available</h3>\n' +
+    '    </g>\n' +
+    '</svg>-->\n' +
+    '    <h3>Loading...</h3>\n' +
     '  </div>\n' +
     '</div>\n' +
     '');
@@ -493,9 +520,6 @@ function mdBody() {
 
     $scope.$watch('rows', on_treeData_change, true);
 
-
-
-
   }
 
   Controller.$inject = ["$scope", '$attrs'];
@@ -509,7 +533,8 @@ function mdBody() {
     scope: {
       rows: "=?",
       cols: '=?',
-      config: '=?'
+      config: '=?',
+      options: "=?"
     }
   };
 }
@@ -553,13 +578,21 @@ function mdCell() {
       return numeral(number/1000000).format('$0.0a');
     }
 
-    $scope.getDate = function(date) {
+    $scope.getDate = function (date, micro) {
+
       if(!date) {
-        return '–'; 
+        return '–';
       }
-      var d = new Date(date); 
-      return moment(d).format('ll');
+
+      if (micro) {
+        date = date / 100000;
+        return moment.unix(date).format('ll');
+      }
+
+      return moment(date).format('ll');
     }
+
+    $scope.pluck = _.get;
 
   }
 
@@ -1215,6 +1248,10 @@ function mdHead($compile) {
       });
     };
 
+    scope.checkBoxCol = {
+      type: 'checkbox'
+    }
+
     scope.$watchGroup([enableRowSelection, tableCtrl.enableMultiSelect], function (newValue) {
       if(newValue[0] !== oldValue[0]) {
         if(newValue[0]) {
@@ -1250,7 +1287,8 @@ function mdHead($compile) {
     scope: {
       order: '=?mdOrder',
       onReorder: '=?mdOnReorder',
-      cols: '=?'
+      cols: '=?',
+      options: '=?'
     }
   };
 }
@@ -1276,31 +1314,31 @@ function mdRow() {
       return tableCtrl.$$rowSelect;
     }
 
-    function isBodyRow() {
-      return tableCtrl.getBodyRows().indexOf(element[0]) !== -1;
-    }
+    // function isBodyRow() {
+    //   return tableCtrl.getBodyRows().indexOf(element[0]) !== -1;
+    // }
 
     function isChild(node) {
       return element[0].contains(node[0]);
     }
 
-    if(isBodyRow()) {
-      var cell = angular.element('<td class="md-cell">');
+    // if(isBodyRow()) {
+    //   var cell = angular.element('<td class="md-cell">');
 
-      scope.$watch(enableRowSelection, function (enable) {
-        // if a row is not selectable, prepend an empty cell to it
-        if(enable && !attrs.mdSelect) {
-          if(!isChild(cell)) {
-            element.prepend(cell);
-          }
-          return;
-        }
+    //   scope.$watch(enableRowSelection, function (enable) {
+    //     // if a row is not selectable, prepend an empty cell to it
+    //     if(enable && !attrs.mdSelect) {
+    //       if(!isChild(cell)) {
+    //         element.prepend(cell);
+    //       }
+    //       return;
+    //     }
 
-        if(isChild(cell)) {
-          cell.remove();
-        }
-      });
-    }
+    //     if(isChild(cell)) {
+    //       cell.remove();
+    //     }
+    //   });
+    // }
   }
 
   return {
@@ -1311,7 +1349,8 @@ function mdRow() {
     replace: true,
     scope: {
       row: "=?",
-      cols: '=?'
+      cols: '=?',
+      options: "=?"
     },
     templateUrl: 'md-row.html'
   };
@@ -1646,16 +1685,16 @@ function Hash() {
 function mdTable() {
 
   function compile(tElement, tAttrs) {
-    tElement.addClass('md-table');
+    // tElement.addClass('md-table');
 
-    if(tAttrs.hasOwnProperty('mdProgress')) {
-      var body = tElement.find('.md-tbody')[0];
-      var progress = angular.element('<div class="md-table-progress">');
+    // if(tAttrs.hasOwnProperty('mdProgress')) {
+    //   var body = tElement.find('.md-tbody')[0];
+    //   var progress = angular.element('<div class="md-table-progress">');
 
-      if(body) {
-        tElement[0].insertBefore(progress[0], body);
-      }
-    }
+    //   if(body) {
+    //     tElement[0].insertBefore(progress[0], body);
+    //   }
+    // }
   }
 
   function Controller($attrs, $element, $q, $scope) {
@@ -1682,7 +1721,7 @@ function mdTable() {
     function disableRowSelection() {
       self.$$rowSelect = false;
 
-      if(angular.isFunction(watchListener)) {
+      if (angular.isFunction(watchListener)) {
         watchListener();
       }
 
@@ -1690,7 +1729,7 @@ function mdTable() {
     }
 
     function resolvePromises() {
-      if(!queue.length) {
+      if (!queue.length) {
         return $scope.$applyAsync();
       }
 
@@ -1705,34 +1744,16 @@ function mdTable() {
     }
 
     function validateModel() {
-      if(!self.selected) {
+      if (!self.selected) {
         return console.error('Row selection: ngModel is not defined.');
       }
 
-      if(!angular.isArray(self.selected)) {
+      if (!angular.isArray(self.selected)) {
         return console.error('Row selection: Expected an array. Recived ' + typeof self.selected + '.');
       }
 
       return true;
     }
-
-    self.columnCount = function () {
-      return self.getRows($element[0]).reduce(function (count, row) {
-        return row.cells.length > count ? row.cells.length : count;
-      }, 0);
-    };
-
-    self.getRows = function (element) {
-      return Array.prototype.filter.call(element.rows, function (row) {
-        return !row.classList.contains('ng-leave');
-      });
-    };
-
-    self.getBodyRows = function () {
-      return Array.prototype.reduce.call($element.find('.md-tbody'), function (result, tbody) {
-        return result.concat(self.getRows(tbody));
-      }, []);
-    };
 
     self.getElement = function () {
       return $element;
@@ -1751,11 +1772,11 @@ function mdTable() {
     };
 
     self.queuePromise = function (promise) {
-      if(!promise) {
+      if (!promise) {
         return;
       }
 
-      if(queue.push(angular.isArray(promise) ? $q.all(promise) : $q.when(promise)) === 1) {
+      if (queue.push(angular.isArray(promise) ? $q.all(promise) : $q.when(promise)) === 1) {
         resolvePromises();
       }
     };
@@ -1767,17 +1788,17 @@ function mdTable() {
     self.removeModelChangeListener = function (listener) {
       var index = modelChangeListeners.indexOf(listener);
 
-      if(index !== -1) {
+      if (index !== -1) {
         modelChangeListeners.splice(index, 1);
       }
     };
 
-    if($attrs.hasOwnProperty('mdProgress')) {
+    if ($attrs.hasOwnProperty('mdProgress')) {
       $scope.$watch('$mdTable.progress', self.queuePromise);
     }
 
     $scope.$watch(rowSelect, function (enable) {
-      if(enable && !!validateModel()) {
+      if (enable && !!validateModel()) {
         enableRowSelection();
       } else {
         disableRowSelection();
@@ -1800,7 +1821,8 @@ function mdTable() {
       progress: '=?mdProgress',
       selected: '=ngModel',
       rowSelect: '=mdRowSelect',
-      tableData: '=?tableData'
+      tableData: '=?tableData',
+      tableOptions: '=?tableOptions',
     }
   };
 }

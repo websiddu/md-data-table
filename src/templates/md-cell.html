@@ -1,21 +1,30 @@
 <div style="max-width: {{col.width}}px;" class="md-cell {{col.type}}">
-  <div ng-if="col.type == 'currency microusd'">
-    {{getCurrency(row.branch[col.field])}}
+  <div ng-switch on="col.type">
+    <div ng-switch-when="currency microusd">
+      {{getCurrency(row.branch[col.field])}}
+    </div>
+    <div ng-switch-when="date">
+      {{getDate(pluck(row.branch, col.field))}}
+    </div>
+    <div ng-switch-when="date micro">
+      {{getDate(pluck(row.branch, col.field), true)}}
+    </div>
+    <div ng-switch-when="number">
+      {{pluck(row.branch, col.field)}}
+    </div>
+    <div ng-switch-when="string">
+      {{pluck(row.branch, col.field)}}
+    </div>
+    <div ng-switch-when="string link">
+      <a ng-href="#/{{col.table}}/{{row.branch.id}}">{{pluck(row.branch, col.field)}}</a>
+    </div>
+    <div ng-switch-when="string dropdown">
+      <md-select ng-model="row.branch[col.field]">
+        <md-option ng-value="opt" ng-repeat="opt in col.enum.split(':')">{{opt}}</md-option>
+      </md-select>
+    </div>
   </div>
-  <div ng-if="col.type == 'date'">
-    {{getDate(row.branch[col.field])}}
-  </div>
-  <div ng-if="col.type == 'number'">
-    {{row.branch[col.field]}}
-  </div>
-  <div ng-if="col.type == 'string'">
-    {{row.branch[col.field]}}
-  </div>
-  <div ng-if="col.type == 'string link'">
-    <a ng-href="#/{{col.table}}/{{row.branch.id}}">{{row.branch[col.field]}}</a>
-  </div>
-  <div ng-if="col.type == 'switch'">
+  <!--<div ng-if="col.type == 'switch'">
     {{col.options.join(', ')}}
-  </div>
-
+  </div>-->
 </div>

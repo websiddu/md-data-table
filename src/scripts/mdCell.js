@@ -38,13 +38,21 @@ function mdCell() {
       return numeral(number/1000000).format('$0.0a');
     }
 
-    $scope.getDate = function(date) {
+    $scope.getDate = function (date, micro) {
+
       if(!date) {
-        return '–'; 
+        return '–';
       }
-      var d = new Date(date); 
-      return moment(d).format('ll');
+
+      if (micro) {
+        date = date / 100000;
+        return moment.unix(date).format('ll');
+      }
+
+      return moment(date).format('ll');
     }
+
+    $scope.pluck = _.get;
 
   }
 

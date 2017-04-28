@@ -1,4 +1,4 @@
   <div class="md-body">
-    <md-row ng-repeat='row in tree_rows | searchFor:$parent.filterString:expandingProperty:cols track by row.branch.uid' row='row' cols='cols' ng-class="'level-' + {{ row.level }} + (row.branch.selected ? ' active':'')" class="tree-grid-row md-row"
+    <md-row options="options" ng-repeat='row in tree_rows | searchFor:$parent.filterString:expandingProperty:cols track by row.branch.uid' row='row' cols='cols' ng-class="'level-' + {{ row.level }} + (row.branch.selected ? ' active':'')" class="tree-grid-row md-row"
     ></md-row>
   </div>

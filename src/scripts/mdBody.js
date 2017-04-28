@@ -212,9 +212,6 @@ function mdBody() {
 
     $scope.$watch('rows', on_treeData_change, true);
 
-
-
-
   }
 
   Controller.$inject = ["$scope", '$attrs'];
@@ -228,7 +225,8 @@ function mdBody() {
     scope: {
       rows: "=?",
       cols: '=?',
-      config: '=?'
+      config: '=?',
+      options: "=?"
     }
   };
 }

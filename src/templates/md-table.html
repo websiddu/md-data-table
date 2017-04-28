@@ -1,19 +1,24 @@
 <div>
   <div class="tree-grid md-table">
-    <md-head cols='$mdTable.tableData.cols' ng-if="$mdTable.tableData.cols"></md-head>
-    <md-body rows='$mdTable.tableData.rows' cols='$mdTable.tableData.cols' ng-if="$mdTable.tableData.cols && $mdTable.tableData.rows.length > 0"></md-body>
+    <md-head cols='$mdTable.tableData.cols' options="$mdTable.tableOptions" ng-if="$mdTable.tableData.cols"></md-head>
+    <div class="md-table-progress"></div>
+    <md-body rows='$mdTable.tableData.rows' cols='$mdTable.tableData.cols' ng-if="$mdTable.tableData.cols && $mdTable.tableData.rows.length > 0" options="$mdTable.tableOptions"></md-body>
   </div>
-  <div class="md-table-empty" style="display: none;">
-    <svg width="57px" height="50px" viewBox="0 0 57 50" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-        <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-            <g id="table" transform="translate(1.000000, 1.000000)" stroke="#BDBDBD" stroke-width="2" fill="#FFFFFF">
-                <rect id="Rectangle" x="0" y="0" width="54.084507" height="8.11267606"></rect>
-                <rect id="Rectangle" x="0" y="14.1971831" width="13.5211268" height="33.8028169"></rect>
-                <rect id="Rectangle" x="20.2816901" y="14.1971831" width="13.5211268" height="33.8028169"></rect>
-                <rect id="Rectangle" x="40.5633803" y="14.1971831" width="13.5211268" height="33.8028169"></rect>
+  <md-table-pagination></md-table-pagination>
+  <div class="md-table-empty none" ng-if="$mdTable.tableData.rows.length == 0">
+<!--<svg width="60px" height="60px" viewBox="0 0 100 100" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>icon</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="icon">
+            <circle id="Oval" fill-opacity="0.36" fill="#000000" cx="50" cy="50" r="50"></circle>
+            <g id="ic_local_offer_black_24dp" transform="translate(30.000000, 30.000000)" fill="#FFFFFF">
+                <path d="M38.0358333,19.195 L20.7858333,1.945 C20.0958333,1.255 19.1375,0.833333333 18.0833333,0.833333333 L4.66666667,0.833333333 C2.55833333,0.833333333 0.833333333,2.55833333 0.833333333,4.66666667 L0.833333333,18.0833333 C0.833333333,19.1375 1.255,20.0958333 1.96416667,20.805 L19.2141667,38.055 C19.9041667,38.745 20.8625,39.1666667 21.9166667,39.1666667 C22.9708333,39.1666667 23.9291667,38.745 24.6191667,38.0358333 L38.0358333,24.6191667 C38.745,23.9291667 39.1666667,22.9708333 39.1666667,21.9166667 C39.1666667,20.8625 38.7258333,19.885 38.0358333,19.195 Z M7.54166667,10.4166667 C5.95083333,10.4166667 4.66666667,9.1325 4.66666667,7.54166667 C4.66666667,5.95083333 5.95083333,4.66666667 7.54166667,4.66666667 C9.1325,4.66666667 10.4166667,5.95083333 10.4166667,7.54166667 C10.4166667,9.1325 9.1325,10.4166667 7.54166667,10.4166667 Z" id="Shape"></path>
             </g>
         </g>
-    </svg>
-    <h3>No content available</h3>
+    </g>
+</svg>-->
+    <h3>Loading...</h3>
   </div>
 </div>

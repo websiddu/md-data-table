@@ -1,6 +1,7 @@
   <div class="md-head">
     <div class="md-row">
-      <md-column>&nbsp;</md-column>
+      <md-column ng-if="$mdHead.options.selection" col='checkBoxCol'></md-column>
+      <md-column ng-if="$mdHead.options.expand">&nbsp;</md-column>
       <md-column ng-repeat="col in $mdHead.cols" col='col' md:order:by="name">
       </md-column>
     </div>

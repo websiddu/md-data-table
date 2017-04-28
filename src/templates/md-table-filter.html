@@ -7,7 +7,8 @@
         </md-select>
       </div>
       <div class="filterset">
-        <md-input-container>
+        <span>Quarter </span>
+        <md-input-container flex>
           <md-select ng-model="filter.filterset.quarter">
             <md-option ng-value="0" selected>Q4 2016</md-option>
             <md-option ng-value="1">Q3 2016</md-option>
@@ -15,7 +16,8 @@
         </md-input-container>
       </div>
       <div class="filterset">
-        <md-input-container>
+        <span>Companies </span>
+        <md-input-container flex>
           <md-select ng-model="filter.filterset.companies">
             <md-option ng-value="0" selected>Current</md-option>
             <md-option ng-value="1">Future</md-option>
@@ -30,7 +32,6 @@
       <div class="chipscontainer">
         <md-table-filter-chips filters="filters"></md-table-filter-chips>
       </div>
-
     </div>
   </div>
 </md-card>

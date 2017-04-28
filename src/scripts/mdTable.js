@@ -29,16 +29,16 @@ function Hash() {
 function mdTable() {
 
   function compile(tElement, tAttrs) {
-    tElement.addClass('md-table');
+    // tElement.addClass('md-table');
 
-    if(tAttrs.hasOwnProperty('mdProgress')) {
-      var body = tElement.find('.md-tbody')[0];
-      var progress = angular.element('<div class="md-table-progress">');
+    // if(tAttrs.hasOwnProperty('mdProgress')) {
+    //   var body = tElement.find('.md-tbody')[0];
+    //   var progress = angular.element('<div class="md-table-progress">');
 
-      if(body) {
-        tElement[0].insertBefore(progress[0], body);
-      }
-    }
+    //   if(body) {
+    //     tElement[0].insertBefore(progress[0], body);
+    //   }
+    // }
   }
 
   function Controller($attrs, $element, $q, $scope) {
@@ -65,7 +65,7 @@ function mdTable() {
     function disableRowSelection() {
       self.$$rowSelect = false;
 
-      if(angular.isFunction(watchListener)) {
+      if (angular.isFunction(watchListener)) {
         watchListener();
       }
 
@@ -73,7 +73,7 @@ function mdTable() {
     }
 
     function resolvePromises() {
-      if(!queue.length) {
+      if (!queue.length) {
         return $scope.$applyAsync();
       }
 
@@ -88,34 +88,16 @@ function mdTable() {
     }
 
     function validateModel() {
-      if(!self.selected) {
+      if (!self.selected) {
         return console.error('Row selection: ngModel is not defined.');
       }
 
-      if(!angular.isArray(self.selected)) {
+      if (!angular.isArray(self.selected)) {
         return console.error('Row selection: Expected an array. Recived ' + typeof self.selected + '.');
       }
 
       return true;
     }
-
-    self.columnCount = function () {
-      return self.getRows($element[0]).reduce(function (count, row) {
-        return row.cells.length > count ? row.cells.length : count;
-      }, 0);
-    };
-
-    self.getRows = function (element) {
-      return Array.prototype.filter.call(element.rows, function (row) {
-        return !row.classList.contains('ng-leave');
-      });
-    };
-
-    self.getBodyRows = function () {
-      return Array.prototype.reduce.call($element.find('.md-tbody'), function (result, tbody) {
-        return result.concat(self.getRows(tbody));
-      }, []);
-    };
 
     self.getElement = function () {
       return $element;
@@ -134,11 +116,11 @@ function mdTable() {
     };
 
     self.queuePromise = function (promise) {
-      if(!promise) {
+      if (!promise) {
         return;
       }
 
-      if(queue.push(angular.isArray(promise) ? $q.all(promise) : $q.when(promise)) === 1) {
+      if (queue.push(angular.isArray(promise) ? $q.all(promise) : $q.when(promise)) === 1) {
         resolvePromises();
       }
     };
@@ -150,17 +132,17 @@ function mdTable() {
     self.removeModelChangeListener = function (listener) {
       var index = modelChangeListeners.indexOf(listener);
 
-      if(index !== -1) {
+      if (index !== -1) {
         modelChangeListeners.splice(index, 1);
       }
     };
 
-    if($attrs.hasOwnProperty('mdProgress')) {
+    if ($attrs.hasOwnProperty('mdProgress')) {
       $scope.$watch('$mdTable.progress', self.queuePromise);
     }
 
     $scope.$watch(rowSelect, function (enable) {
-      if(enable && !!validateModel()) {
+      if (enable && !!validateModel()) {
         enableRowSelection();
       } else {
         disableRowSelection();
@@ -183,7 +165,8 @@ function mdTable() {
       progress: '=?mdProgress',
       selected: '=ngModel',
       rowSelect: '=mdRowSelect',
-      tableData: '=?tableData'
+      tableData: '=?tableData',
+      tableOptions: '=?tableOptions',
     }
   };
 }

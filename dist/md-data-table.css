@@ -192,10 +192,17 @@ md-toolbar.md-table-toolbar .md-toolbar-tools > .md-button.md-icon-button:last-c
   display: -ms-flexbox;
   display: flex;
   border-bottom: solid 1px #eee;
-  padding: 4px 16px;
+  padding: 8px 16px;
 }
 .filtersets .filterset {
   margin-right: 24px;
+  -ms-flex-align: center;
+      align-items: center;
+  display: -ms-flexbox;
+  display: flex;
+}
+.filtersets .filterset span {
+  margin-right: 8px;
 }
 .filtersets .filterset md-select {
   margin: 0;
@@ -231,6 +238,13 @@ md-toolbar.md-table-toolbar .md-toolbar-tools > .md-button.md-icon-button:last-c
 }
 .md-table-filter-chip {
   position: relative;
+}
+.md-table-filter-chip md-autocomplete-wrap input {
+  border-bottom: 0 !important;
+}
+.md-table-filter-chip md-autocomplete-wrap input:focus {
+  border-bottom: 0 !important;
+  box-shadow: none !important;
 }
 .md-table-filter-condition-panel {
   display: block;
@@ -295,14 +309,27 @@ md-table-container {
       align-items: center;
   -ms-flex-direction: column;
       flex-direction: column;
-  padding: 40px 0;
+  padding: 36px 0;
   border-top: solid 1px #eee;
-  display: none;
 }
 .md-table-empty h3 {
-  font-size: 15px;
+  font-size: 16px;
   color: #ccc;
-  font-weight: 300;
+  font-weight: 400;
+  margin-top: 16px;
+  margin-bottom: 8px;
+}
+.md-table.compact {
+  font-size: 12px;
+}
+.md-table.compact .md-body > .md-row {
+  height: 32px;
+}
+.md-table.compact .md-head > .md-row {
+  height: 32px;
+}
+.md-table.compact .md-foot > .md-row {
+  height: 32px;
 }
 .md-table {
   width: 100%;
@@ -321,6 +348,9 @@ md-table-container {
 }
 .md-table .md-row {
   display: table-row;
+}
+.md-table .md-row:hover {
+  background-color: #eee;
 }
 .md-table .md-cell {
   display: table-cell;

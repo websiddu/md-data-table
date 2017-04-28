@@ -1,5 +1,8 @@
-<div class="md-row">
-  <div class="md-cell" style="width: 48px;">
+<div class="md-row" ng-click="openPanel(cols)">
+  <div class="md-cell" style="width: 48px; text-align: center;" ng-if="options.selection">
+    <md-checkbox></md-checkbox>
+  </div>
+  <div class="md-cell" style="width: 48px; text-align: center;" ng-if="options.expand">
     <md-button class="indented md-icon-button" ng-click="user_clicks_branch(row.branch)" ng-if="row.branch.children.length > 0">
       <i ng-class="row.tree_icon" ng-click="row.branch.expanded = !row.branch.expanded" class="material-icons">
         {{row.branch.expanded ? 'expand_more' : 'expand_less'}}
